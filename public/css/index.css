@@ -1,0 +1,6 @@
+.placeholder {
+    display: flex;
+    width: 50vw;
+    justify-content: center;
+    margin: 2vh 25vw;
+  }
