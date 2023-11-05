@@ -1,0 +1,29 @@
+{
+  "name": "ktcontrol",
+  "version": "1.0.0",
+  "description": "A control Panel for employees in my pharmacy",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon main.ts",
+    "start": "node ./build/main.js",
+    "build": "tsc ."
+  },
+  "author": "kareem kasem",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.2.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.20",
+    "@types/node": "^20.8.10",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1"
+  }
+}
