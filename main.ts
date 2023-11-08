@@ -1,50 +1,40 @@
-import dotenv from "dotenv"
-import express, { Request, Response } from "express"
-import helmet from "helmet"
-import { connectToDatabase, db } from "./database"
-import { ObjectId } from "mongodb"
+import dotenv from "dotenv";
+import express, { Request, Response } from "express";
+import helmet from "helmet";
+import { connectToDatabase, db } from "./database";
+
+import employeeRoutes from "./routes/Employee";
 
 // config
-dotenv.config()
-const server = express()
-
-// here I only included websites in which I do NOT want to enforce the CSP which forbids loading resources from outside sources
+dotenv.config();
+const server = express();
 server.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        "img-src": ["'self'", "media2.giphy.com"],
-      },
-    },
-  })
-)
-server.use(express.json())
-server.use(express.static(process.cwd() + "/public"))
-server.set("view engine", "ejs")
+	helmet({
+		contentSecurityPolicy: {
+			directives: {
+				...helmet.contentSecurityPolicy.getDefaultDirectives(),
+				"img-src": ["'self'", "media2.giphy.com"],
+				// here I only included websites in which I do NOT want to enforce the CSP which forbids loading resources from outside sources
+			},
+		},
+	})
+);
+server.use(express.json());
+server.use(express.static(process.cwd() + "/public"));
+server.set("view engine", "ejs");
 
-//temporay, just for testing ****
+// Routing
 server.get("/", (req: Request, res: Response) => {
-  res.render("index.ejs")
-})
-
-server.get("/employees/:id", async (req: Request, res: Response) => {
-  const id = req.params.id
-  const data = await db
-    .collection("employees")
-    .findOne({ _id: new ObjectId(id) })
-  res.status(200).send(data)
-})
-
-//****
-
+	//temporay, just for testing ****
+	res.render("index.ejs");
+});
+server.use("/employee", employeeRoutes);
 server.all("/*", (req: Request, res: Response) => {
-  res.status(404).render("not-found.ejs")
-})
+	res.status(404).render("not-found.ejs");
+});
 
-// database connection
-connectToDatabase()
-
+// Establish the connection
+connectToDatabase();
 server.listen(process.env.PORT, () => {
-  console.log(`server started on port ${process.env.PORT}`)
-})
+	console.log(` Server started on port ${process.env.PORT} \n Database started on ${process.env.MONGO_URI}`);
+});
