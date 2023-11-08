@@ -1,4 +1,4 @@
-import { db } from "../database";
+import {COLLECTIONS} from "../database";
 import JOI from "joi";
 import { Employee, WorkHours } from "../types";
 
@@ -29,4 +29,4 @@ export const EmployeeSchema: JOI.Schema<Employee> = JOI.object({
 		.required(),
 });
 
-export const EmployeeColl = db.collection<Employee>("employees");
+export const EmployeeColl = COLLECTIONS.employees;

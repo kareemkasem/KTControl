@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
 import helmet from "helmet";
-import { connectToDatabase, db } from "./database";
+import { connectToDatabase} from "./database";
 
 import employeeRoutes from "./routes/Employee";
 
@@ -25,7 +25,7 @@ server.set("view engine", "ejs");
 
 // Routing
 server.get("/", (req: Request, res: Response) => {
-	//temporay, just for testing ****
+	//temporary, just for testing ****
 	res.render("index.ejs");
 });
 server.use("/employee", employeeRoutes);
@@ -35,6 +35,7 @@ server.all("/*", (req: Request, res: Response) => {
 
 // Establish the connection
 connectToDatabase();
+
 server.listen(process.env.PORT, () => {
 	console.log(` Server started on port ${process.env.PORT} \n Database started on ${process.env.MONGO_URI}`);
 });
