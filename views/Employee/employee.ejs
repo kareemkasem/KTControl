@@ -1,0 +1,32 @@
+<%- include("../share") %>
+<head>
+	<link rel="stylesheet" href="/css/employee.css" />
+</head>
+<h1 class="employee-page-title"><a href="/employee" style="text-decoration: none; color: white">Employees</a></h1>
+<div class="employee-details extended-employee-details" id="employee" data-id="<%= _id.toString() %>">
+	<p class="employee-detail-title employee-name"><%= name %></p>
+	<p><span class="employee-detail-title">Job Title:</span> <%= title %></p>
+	<p><span class="employee-detail-title">Code:</span> <%= code %></p>
+	<p><span class="employee-detail-title">userName:</span> <%= username %></p>
+	<p><span class="employee-detail-title">Hourly Rate:</span> <%= hourlyRate %></p>
+	<p>
+		<span class="employee-detail-title">Work Hours:</span> <span>from</span> <%= workHours.clockIn %>
+		<span>to</span> <%= workHours.clockOut %>
+	</p>
+	<div class="extended-employee-details-buttons">
+		<button>Edit</button>
+		<button>Change Password</button>
+		<button id="delete-employee-button">Delete</button>
+	</div>
+</div>
+<div id="delete-employee-modal">
+	<div class="delete-employee-modal-dialogue">
+		<p>are you sure you want to delete <%=name%> ?</p>
+		<div class="delete-employee-modal-buttons">
+			<button class="delete-employee-modal-button" id="confirm-delete-employee-button">Confirm</button>
+			<button class="delete-employee-modal-button" id="cancel-delete-employee-button">Cancel</button>
+		</div>
+	</div>
+</div>
+
+<script src="/js/employee.js"></script>

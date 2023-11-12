@@ -2,7 +2,7 @@
 <head>
 	<link rel="stylesheet" href="/css/employee.css" />
 </head>
-<h1 class="employee-page-title">Employees</h1>
+<h1 class="employee-page-title"><a href="/employee" style="text-decoration: none; color: white">Employees</a></h1>
 <main class="employee-list">
 	<% employees.forEach(e => { %>
 	<div class="employee-details" id="<%= e._id.toString() %>">
@@ -17,4 +17,4 @@
 	<div class="employee-details"><span id="add-new-employee" title="add new employee">+</span></div>
 </main>
 
-<script src="js/employee.js"></script>
+<script src="/js/employee.js"></script>

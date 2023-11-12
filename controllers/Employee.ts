@@ -10,14 +10,14 @@ import { generateSalt } from "../utils/generateSalt";
 export async function getEmployee(req: Request<{ id: string }>, res: Response<WithId<Employee> | { message: string }>) {
 	const id: string = req.params.id;
 	try {
-		const result = await EmployeeColl.findOne<WithId<Employee>>({
+		const employee = await EmployeeColl.findOne<WithId<Employee>>({
 			_id: new ObjectId(id),
 		});
-		if (!result) {
+		if (!employee) {
 			res.status(404).send({ message: "Employee not found" });
 			return;
 		}
-		res.status(200).send(result);
+		res.status(200).render("Employee/employee", { ...employee });
 	} catch (e) {
 		res.status(400).send({ message: (e as Error).message });
 	}
@@ -174,15 +174,12 @@ export async function updateEmployeePassword(
 export async function deleteEmployee(req: Request<{ id: string }>, res: Response<{ message: string }>) {
 	const id: string = req.params.id;
 	try {
-		const result = await EmployeeColl.findOne<WithId<Employee>>({
-			_id: new ObjectId(id),
-		});
-		if (!result) {
+		const { deletedCount } = await EmployeeColl.deleteOne({ _id: new ObjectId(id) });
+		if (deletedCount !== 1) {
 			res.status(404).send({ message: "Employee not found" });
 			return;
 		}
-		await EmployeeColl.deleteOne({ _id: new ObjectId(id) });
-		res.status(200).send({ message: "Employee deleted" });
+		res.status(200).send({ message: "deletion succeded" });
 	} catch (e) {
 		res.status(400).send({ message: (e as Error).message });
 	}
