@@ -1,0 +1,20 @@
+<%- include("../share")%>
+<head>
+	<link rel="stylesheet" href="/css/employee.css" />
+</head>
+<h1 class="employee-page-title">Employees</h1>
+<main class="employee-list">
+	<% employees.forEach(e => { %>
+	<div class="employee-details" id="<%= e._id.toString() %>">
+		<p><span class="employee-detail-title">Name:</span> <%= e.name %></p>
+		<p><span class="employee-detail-title">Job Title:</span> <%= e.title %></p>
+		<p><span class="employee-detail-title">Code:</span> <%= e.code %></p>
+		<p><span class="employee-detail-title">userName:</span> <%= e.username %></p>
+		<p><span class="employee-detail-title">Hourly Rate:</span> <%= e.hourlyRate %></p>
+		<p><span class="employee-detail-title">Work Hours:</span> <span>from</span> <%= e.workHours.clockIn %> <span>to</span> <%= e.workHours.clockOut %></p>
+	</div>
+	<%})%>
+	<div class="employee-details"><span id="add-new-employee" title="add new employee">+</span></div>
+</main>
+
+<script src="js/employee.js"></script>

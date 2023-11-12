@@ -1,7 +1,7 @@
 import { ObjectId, WithId } from "mongodb";
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import { Employee } from "../types";
+import { Employee, EmployeeFormInput, WorkHours } from "../types";
 import { EmployeeColl, EmployeeSchema } from "../models/Employee";
 import { generateSalt } from "../utils/generateSalt";
 
@@ -25,23 +25,29 @@ export async function getEmployee(req: Request<{ id: string }>, res: Response<Wi
 
 // GET /employee
 // TODO: testing: Passed ✅
-export async function getAllEmployees(req: Request, res: Response<WithId<Employee>[] | { message: string }>) {
+export async function getAllEmployees(req: Request, res: Response) {
 	try {
-		const result = await EmployeeColl.find<WithId<Employee>>({}).toArray();
-		if (!result) {
+		const employees = await EmployeeColl.find<WithId<Employee>>({}).toArray();
+		if (!employees) {
 			res.status(404).send({ message: "no Employees found" });
 			return;
 		}
-		res.status(200).send(result);
+		res.status(200).render("Employee/employee-list", { employees });
 	} catch (e) {
 		res.status(400).send({ message: (e as Error).message });
 	}
 }
 
+// GET /new-employee
+export async function getNewEmployeePage(req: Request, res: Response) {
+	res.render("Employee/new-employee");
+}
+
 // POST /employee
 // TODO: testing: Passed ✅
-export async function createEmployee(req: Request<{}, {}, Employee>, res: Response<{ insertedId: ObjectId } | { message: string }>) {
-	let employee = req.body;
+export async function createEmployee(req: Request<{}, {}, EmployeeFormInput>, res: Response) {
+	const { name, title, username, password, code, hourlyRate, clockIn, clockOut } = req.body;
+	let employee: Employee = { name, title, username, password, code, hourlyRate, workHours: { clockIn, clockOut } };
 
 	const { value, error } = EmployeeSchema.validate(employee);
 	if (error) {
@@ -62,8 +68,8 @@ export async function createEmployee(req: Request<{}, {}, Employee>, res: Respon
 
 	try {
 		// * please notice that you have an index on code and username that forces it to be unique
-		const { insertedId } = await EmployeeColl.insertOne(employee);
-		res.status(201).send({ insertedId });
+		await EmployeeColl.insertOne(employee);
+		res.status(201).redirect("/employee");
 	} catch (e) {
 		res.status(400).send({ message: `from mongo: ${(e as Error).message}` });
 	}
@@ -87,7 +93,10 @@ export async function updateEmployee(req: Request<{ id: string }, {}, Employee>,
 	try {
 		// * please notice that you have a database index on `code` that forces it to be unique
 		const { code, hourlyRate, name, title, username, workHours } = employee;
-		await EmployeeColl.updateOne({ _id: new ObjectId(id) }, { $set: { code, hourlyRate, name, title, username, workHours } });
+		await EmployeeColl.updateOne(
+			{ _id: new ObjectId(id) },
+			{ $set: { code, hourlyRate, name, title, username, workHours } }
+		);
 		res.status(201).send({ message: "update success" });
 	} catch (e) {
 		res.status(400).send({ message: (e as Error).message });

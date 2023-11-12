@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
 import helmet from "helmet";
-import { connectToDatabase} from "./database";
+import { connectToDatabase } from "./database";
 
 import employeeRoutes from "./routes/Employee";
 
@@ -20,6 +20,7 @@ server.use(
 	})
 );
 server.use(express.json());
+server.use(express.urlencoded({ extended: false }));
 server.use(express.static(process.cwd() + "/public"));
 server.set("view engine", "ejs");
 

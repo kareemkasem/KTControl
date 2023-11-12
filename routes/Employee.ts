@@ -1,8 +1,9 @@
 import express from "express";
-import { createEmployee, deleteEmployee, getAllEmployees, getEmployee, updateEmployee, updateEmployeePassword } from "../controllers/Employee";
+import { createEmployee, deleteEmployee, getAllEmployees, getEmployee, getNewEmployeePage, updateEmployee, updateEmployeePassword } from "../controllers/Employee";
 
 const router = express.Router();
 
+router.get("/new-employee", getNewEmployeePage);
 router.get("/:id", getEmployee);
 router.get("/", getAllEmployees);
 router.post("/", createEmployee);
