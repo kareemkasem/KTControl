@@ -69,9 +69,10 @@ color: var(--brown);
 
 .entry{
     display: flex;
-    align-items: center;
-    justify-content: stretch;
+    align-items: stretch;
+    justify-content: center;
     gap: 5px;
+    flex-direction: column;
 }
 
 .entry label{
@@ -101,6 +102,12 @@ color: var(--brown);
     border-radius: 10px;
     border: 2px solid rgba(0,0,0,0.1);
     background: none;
+}
+
+.entry small{
+    font-size: 0.8rem;
+    color: rgba(128, 128, 128, 0.8);
+    align-self: end;
 }
 
 .submit-button{
@@ -165,26 +172,28 @@ color: var(--brown);
     justify-content: center;
    padding-top: 20vh;
     z-index: 5;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.8);
 }
 
-.delete-employee-modal-dialogue{
+.employee-modal-dialogue{
     background-color: blanchedalmond;
     box-shadow: 5px 5px 5px rgb(0,0,0,0.5);
     border-radius: 15px;
     height: 120px;
     padding: 5px 20px;
     font-size: 1.5rem;
+    display: flex;
+    flex-direction: column;
 }
 
-.delete-employee-modal-buttons{
+.employee-modal-buttons{
     display: flex;
     width: 100%;
     gap: 5px;
     justify-content: end;
 }
 
-.delete-employee-modal-button{
+.employee-modal-button{
     height: 30px;
     background-color: var(--brown);
     color: white;
@@ -193,6 +202,35 @@ color: var(--brown);
     font-size: 1.35rem;
 }
 
-.delete-employee-modal-button:hover{
+.employee-modal-button:hover{
     cursor: pointer;
+}
+
+#update-employee-password-modal{
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    padding-top: 20vh;
+    z-index: 5;
+    background: rgba(0, 0, 0, 0.8);
+}
+#update-employee-password-modal .employee-modal-button{
+    height: 45px;
+}
+
+#update-employee-password-modal input:not(#confirm-change-employee-password-button){
+    width: calc(100vw/3);
+}
+
+#update-employee-password-modal .employee-modal-buttons{
+    margin-top: 10px;
+    gap: 15px
+}
+
+#update-employee-password-modal .employee-modal-dialogue{
+    height: 240px;
+    padding: 20px
 }

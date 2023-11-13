@@ -5,6 +5,9 @@ const deleteEmployeeModal = document.querySelector("#delete-employee-modal");
 const deleteEmployeeButton = document.querySelector("#delete-employee-button");
 const confirmDeleteEmployeeButton = document.querySelector("#confirm-delete-employee-button");
 const cancelDeleteEmployeeButton = document.querySelector("#cancel-delete-employee-button");
+const updateEmployeePasswordModal = document.querySelector("#update-employee-password-modal")
+const changeEmployeePasswordButton = document.querySelector("#change-employee-password-button")
+const cancelChangeEmployeePasswordButton = document.querySelector("#cancel-change-employee-password-button")
 
 if (employeeList)
 	employeeList.addEventListener("click", (e) => {
@@ -39,3 +42,14 @@ if (cancelDeleteEmployeeButton)
 	cancelDeleteEmployeeButton.addEventListener("click", () => {
 		deleteEmployeeModal.style.display = "none";
 	});
+
+if(changeEmployeePasswordButton)
+	changeEmployeePasswordButton.addEventListener("click", ()=> {
+		updateEmployeePasswordModal.style.display = "flex"
+	})
+
+if(cancelChangeEmployeePasswordButton)
+	cancelChangeEmployeePasswordButton.addEventListener("click",(e)=>{
+		e.preventDefault() // ! EVERY BUTTON SUBMITS THE FORM BY DEFAULT
+		updateEmployeePasswordModal.style.display = "none"
+	})

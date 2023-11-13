@@ -8,7 +8,7 @@ router.get("/:id", getEmployee);
 router.get("/", getAllEmployees);
 router.post("/", createEmployee);
 router.put("/:id", updateEmployee);
-router.put("/updatePassword/:id", updateEmployeePassword);
+router.post("/update-password/:id", updateEmployeePassword);
 router.delete("/:id", deleteEmployee);
 
 export default router;

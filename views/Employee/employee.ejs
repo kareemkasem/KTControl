@@ -7,26 +7,46 @@
 	<p class="employee-detail-title employee-name"><%= name %></p>
 	<p><span class="employee-detail-title">Job Title:</span> <%= title %></p>
 	<p><span class="employee-detail-title">Code:</span> <%= code %></p>
-	<p><span class="employee-detail-title">userName:</span> <%= username %></p>
+	<p><span class="employee-detail-title">Username:</span> <%= username %></p>
 	<p><span class="employee-detail-title">Hourly Rate:</span> <%= hourlyRate %></p>
 	<p>
-		<span class="employee-detail-title">Work Hours:</span> <span>from</span> <%= workHours.clockIn %>
-		<span>to</span> <%= workHours.clockOut %>
+		<span class="employee-detail-title">Work Hours:</span> <span>from</span> <%= workHours.clockIn %> <span>to</span> <%= workHours.clockOut
+		%>
 	</p>
 	<div class="extended-employee-details-buttons">
 		<button>Edit</button>
-		<button>Change Password</button>
+		<button id="change-employee-password-button">Change Password</button>
 		<button id="delete-employee-button">Delete</button>
 	</div>
 </div>
 <div id="delete-employee-modal">
-	<div class="delete-employee-modal-dialogue">
-		<p>are you sure you want to delete <%=name%> ?</p>
-		<div class="delete-employee-modal-buttons">
-			<button class="delete-employee-modal-button" id="confirm-delete-employee-button">Confirm</button>
-			<button class="delete-employee-modal-button" id="cancel-delete-employee-button">Cancel</button>
+	<div class="employee-modal-dialogue">
+		<p>are you sure you want to delete <%= name %> ?</p>
+		<div class="employee-modal-buttons">
+			<button class="employee-modal-button" id="confirm-delete-employee-button">Confirm</button>
+			<button class="employee-modal-button" id="cancel-delete-employee-button">Cancel</button>
 		</div>
 	</div>
+</div>
+<div id="update-employee-password-modal">
+	<form method="POST" action="<%= `/employee/update-password/${_id.toString()}` %>" autocomplete="off">
+		<div class="employee-modal-dialogue">
+			<div class="entry">
+				<input type="password" name="oldPassword" placeholder="Old Password" />
+			</div>
+			<div class="entry">
+				<input type="password" name="newPassword" placeholder="New Password" />
+			</div>
+			<div class="entry">
+				<input type="password" name="repeatedNewPassword" placeholder="Repeat New Password" />
+			</div>
+			<div class="employee-modal-buttons">
+				<input type="submit" class="employee-modal-button" id="confirm-change-employee-password-button" value="Confirm" />
+				<button class="employee-modal-button" id="cancel-change-employee-password-button">Cancel</button>
+			</div>
+		</div>
+	</form>
+	action="<% `/employee/update-password/${_id.toString()}` %>"
 </div>
 
 <script src="/js/employee.js"></script>
