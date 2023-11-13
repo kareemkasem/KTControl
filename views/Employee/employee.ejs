@@ -1,8 +1,8 @@
-<%- include("../share") %>
+<%- include('../shared/head'); %>
 <head>
 	<link rel="stylesheet" href="/css/employee.css" />
 </head>
-<h1 class="employee-page-title"><a href="/employee" style="text-decoration: none; color: white">Employees</a></h1>
+<%- include('../shared/nav', {title: "Employees", link: "/employee"}) %>
 <div class="employee-details extended-employee-details" id="employee" data-id="<%= _id.toString() %>">
 	<p class="employee-detail-title employee-name"><%= name %></p>
 	<p><span class="employee-detail-title">Job Title:</span> <%= title %></p>
@@ -21,7 +21,7 @@
 </div>
 <div id="delete-employee-modal">
 	<div class="employee-modal-dialogue">
-		<p>are you sure you want to delete <%= name %> ?</p>
+		<p>Are you sure you want to delete <%= name %> ?</p>
 		<div class="employee-modal-buttons">
 			<button class="employee-modal-button" id="confirm-delete-employee-button">Confirm</button>
 			<button class="employee-modal-button" id="cancel-delete-employee-button">Cancel</button>

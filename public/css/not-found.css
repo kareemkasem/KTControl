@@ -1,3 +1,5 @@
+@import url(./shared.css);
+
 .not-found{
     display: flex;
     flex-direction: column;

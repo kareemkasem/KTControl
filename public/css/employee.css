@@ -1,12 +1,10 @@
-:root{
- --brown: rgb(200, 92, 24)
-}
+@import url(./shared.css);
 
 .employee-page-title{
     font-size: 3rem;
     text-align: center;
-    background-color: var(--brown);
-    color: aliceblue;
+    background: var(--solid-gradient);
+    color: white;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
     padding: 3px 0px;
 }
@@ -27,7 +25,7 @@
     flex-basis: calc(25% - 55px);
     border-radius: 20px;
     padding: 20px;
-    background-color: blanchedalmond;
+    background: var(--green-light);
     font-size: 1.25rem;
     line-height: 10px;
     box-shadow: 2px 2px 2px rgb(0,0,0,0.5);
@@ -37,7 +35,7 @@
 
 .employee-detail-title{
 font-weight: bold;
-color: var(--brown);
+color: var(--blue-dark);
 }
 
 #add-new-employee{
@@ -47,7 +45,7 @@ color: var(--brown);
     align-items: center;
     height: 100%;
     width: 100%;
-    color: var(--brown);
+    color: var(--blue-dark);
 }
 
 .new-employee-form-container{
@@ -112,7 +110,7 @@ color: var(--brown);
 
 .submit-button{
     height: 50px;
-    background-color: var(--brown);
+    background-color: var(--blue-dark);
     color: white;
     border: 2px solid rgba(0,0,0,0.1);
     border-radius: 10px;
@@ -150,7 +148,7 @@ color: var(--brown);
 
 .extended-employee-details-buttons button{
     height: 50px;
-    background-color: var(--brown);
+    background-color: var(--blue-dark);
     color: white;
     border: 2px solid rgba(0,0,0,0.1);
     border-radius: 10px;
@@ -170,20 +168,19 @@ color: var(--brown);
     height: 100vh;
     display: none;
     justify-content: center;
-   padding-top: 20vh;
+    padding-top: 20vh;
     z-index: 5;
     background: rgba(0, 0, 0, 0.8);
 }
 
 .employee-modal-dialogue{
-    background-color: blanchedalmond;
-    box-shadow: 5px 5px 5px rgb(0,0,0,0.5);
-    border-radius: 15px;
+    background-color: var(--green-light);
     height: 120px;
     padding: 5px 20px;
     font-size: 1.5rem;
     display: flex;
     flex-direction: column;
+    border-radius: 25px;
 }
 
 .employee-modal-buttons{
@@ -195,7 +192,7 @@ color: var(--brown);
 
 .employee-modal-button{
     height: 30px;
-    background-color: var(--brown);
+    background-color: var(--blue-dark);
     color: white;
     border: 2px solid rgba(0,0,0,0.1);
     border-radius: 5px;

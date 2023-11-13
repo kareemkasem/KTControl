@@ -1,8 +1,8 @@
-<%- include("../share")%>
+<%- include('../shared/head'); %>
 <head>
 	<link rel="stylesheet" href="/css/employee.css" />
 </head>
-<h1 class="employee-page-title">New Employee</h1>
+<%- include('../shared/nav', {title: "New Employee", link: "/employee"}) %>
 <div class="new-employee-form-container">
 	<form action="/employee" method="post" autocomplete="off" id="new-employee-form">
 		<div class="entry">

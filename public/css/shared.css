@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital@1&family=Space+Grotesk:wght@500&display=swap');
+
+:root{
+    --solid-gradient: linear-gradient(90deg, rgba(107,101,249,1) 0%, rgba(40,236,149,1) 100%);;
+    --background-gradient: linear-gradient(90deg, rgba(208,212,253,1) 0%, rgba(208,255,234,1) 100%);
+    --green-light: rgb(232, 255, 248);
+    --blue-light: rgb(231, 233, 249);
+    --blue-dark: rgb(91, 85, 252);
+    --green-dark: rgba(40,236,149,1);
+}
