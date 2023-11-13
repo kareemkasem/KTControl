@@ -72,15 +72,34 @@ export async function createEmployee(req: Request<{}, {}, EmployeeFormInput>, re
 	}
 }
 
-// PUT /employee/:id
-export async function updateEmployee(req: Request<{ id: string }, {}, Employee>, res: Response<{ message: string }>) {
+// GET /update-employee/:id
+export async function getUpdateEmployee(req: Request<{ id: string }>, res: Response<{ message: string }>) {
+	const id = req.params.id;
+
+	try {
+		const employee: WithId<Employee> | null = await EmployeeColl.findOne({ _id: new ObjectId(id) });
+		if (!employee) {
+			res.status(404).send({ message: "Employee not found" });
+			return;
+		}
+
+		res.status(200).render("Employee/update-employee", { ...employee });
+	} catch (e) {
+		res.status(500).send({ message: (e as Error).message });
+	}
+}
+
+// POST /update-employee/:id
+export async function updateEmployee(req: Request<{ id: string }, {}, EmployeeFormInput>, res: Response<{ message: string }>) {
 	// * for more atomization, this Function does NOT change password
 	let id = req.params.id;
-	let employee = req.body;
+	const { name, title, username, password, code, hourlyRate, clockIn, clockOut } = req.body;
+	let employee: Employee = { name, title, username, password, code, hourlyRate, workHours: { clockIn, clockOut } };
 
-	const { value, error } = EmployeeSchema.validate(employee);
+	const { value, error } = EmployeeSchema.fork("password", (schema) => schema.optional()).validate(employee);
+	// * Here I modified the Schema so it won't check for a password
 	if (error) {
-		res.send({ message: error.message });
+		res.status(400).send({ message: error.message });
 		return;
 	} else {
 		employee = value;
@@ -90,7 +109,7 @@ export async function updateEmployee(req: Request<{ id: string }, {}, Employee>,
 		// * please notice that you have a database index on `code` that forces it to be unique
 		const { code, hourlyRate, name, title, username, workHours } = employee;
 		await EmployeeColl.updateOne({ _id: new ObjectId(id) }, { $set: { code, hourlyRate, name, title, username, workHours } });
-		res.status(201).send({ message: "update success" });
+		res.status(201).redirect(`/employee/${id}`);
 	} catch (e) {
 		res.status(400).send({ message: (e as Error).message });
 	}

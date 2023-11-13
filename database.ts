@@ -1,13 +1,11 @@
 import { MongoClient } from "mongodb";
-import {Employee} from "./types";
+import { Employee } from "./types";
 
 if (!process.env.MONGO_URI) {
 	throw new Error("mongo uri not defined");
 }
 
 const client = new MongoClient(process.env.MONGO_URI);
-
-export const db = client.db("ktcontrol");
 
 export async function connectToDatabase() {
 	try {
@@ -17,6 +15,8 @@ export async function connectToDatabase() {
 	}
 }
 
+const db = client.db("ktcontrol");
+
 export const COLLECTIONS = {
-	employees: db.collection<Employee>("employees")
-} as const
+	employees: db.collection<Employee>("employees"),
+} as const;

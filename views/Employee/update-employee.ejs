@@ -1,0 +1,43 @@
+<%- include("../share")%>
+<head>
+	<link rel="stylesheet" href="/css/employee.css" />
+</head>
+<h1 class="employee-page-title"><%= name %></h1>
+<div class="new-employee-form-container">
+	<form action="<%=`/employee/update-employee/${_id.toString()}`%>" method="post" autocomplete="off" id="new-employee-form">
+		<div class="entry">
+			<label for="Title">Title: </label>
+			<select type="text" id="Title" name="title">
+				<option value="pharmacist"  <%= (title === "pharmacist") ? "selected" : "" %>>Pharmacist</option>
+				<option value="assistant"  <%= (title === "assistant") ? "selected" : "" %>>Assistant</option>
+				<option value="trainee"  <%= (title === "trainee") ? "selected" : "" %>>Trainee</option>
+				<option value="delivery"  <%= (title === "delivery") ? "selected" : "" %>>Delivery</option>
+				<option value="manager"  <%= (title === "manager") ? "selected" : "" %>>Manager</option>
+				<option value="other"  <%= (title === "other") ? "selected" : "" %>>Other</option>
+			</select>
+		</div>
+		<div class="entry">
+			<label for="name">Name: </label>
+			<input type="text" id="name" placeholder="Name" name="name" value="<%= name %>" />
+		</div>
+		<div class="entry">
+			<label for="code">Code: </label>
+			<input type="number" id="code" min="1" max="100" placeholder="Code" name="code" value="<%= code %>" />
+		</div>
+		<div class="entry">
+			<label for="username">Username: </label>
+			<input type="text" id="username" placeholder="Username" name="username" value="<%= username %>" />
+			<small>username can only have letters,numbers, "_" , and "."</small>
+		</div>
+		<div class="entry">
+			<label for="hourlyRate">Hourly Rate: </label>
+			<input type="number" min="100" max="2000" id="hourlyRate" placeholder="Hourly Rate" name="hourlyRate" value="<%= hourlyRate %>" />
+		</div>
+		<div class="entry" for="workHours">
+			<label for="workHours">Work Hours: </label>
+			<input type="time" name="clockIn" id="clockIn" value="<%= workHours.clockIn  %>" />
+			<input type="time" name="clockOut" id="clockOut" value="<%= workHours.clockOut  %>" />
+		</div>
+		<input type="submit" value="Submit" class="submit-button" />
+	</form>
+</div>
