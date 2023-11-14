@@ -162,9 +162,9 @@ export async function updateEmployeePassword(
 		}
 
 		const salt = await generateSalt();
-		const newhashedPassword = await bcrypt.hash(newPassword, salt);
+		const newHashedPassword = await bcrypt.hash(newPassword, salt);
 
-		await EmployeeColl.updateOne({ _id: new ObjectId(id) }, { $set: { password: newhashedPassword } });
+		await EmployeeColl.updateOne({ _id: new ObjectId(id) }, { $set: { password: newHashedPassword } });
 		res.status(201).redirect(`/employee/${id}`);
 	} catch (e) {
 		res.status(500).send({ message: (e as Error).message });
