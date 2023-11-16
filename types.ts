@@ -23,3 +23,19 @@ export type EmployeeFormInput = {
 	clockIn: string;
 	clockOut: string;
 };
+
+export type IncentiveItem = {
+	name: string,
+	price: number,
+	incentive: number,
+	validTill: Date,
+};
+
+export type IncentiveEntry = {
+	month: string;
+	employee: number;
+	details: {
+		item: IncentiveItem,
+		quantity: number
+	}
+};

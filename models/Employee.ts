@@ -1,9 +1,8 @@
-import { COLLECTIONS } from "../database";
 import JOI from "joi";
 import { Employee, WorkHours } from "../types";
 
-export const EmployeeSchema: JOI.Schema<Employee> = JOI.object({
-	code: JOI.number().min(1).max(100).required(),
+export const EmployeeSchema = JOI.object<Employee>({
+	code: JOI.number().min(1).max(10000).required(),
 	name: JOI.string().max(20).required(),
 	username: JOI.string()
 		.lowercase()
@@ -35,5 +34,3 @@ export const EmployeeSchema: JOI.Schema<Employee> = JOI.object({
 		})
 		.required(),
 });
-
-export const EmployeeColl = COLLECTIONS.employees;

@@ -1,15 +1,19 @@
 import { ObjectId, WithId } from "mongodb";
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import { Employee, EmployeeFormInput, WorkHours } from "../types";
-import { EmployeeColl, EmployeeSchema } from "../models/Employee";
+import { Employee, EmployeeFormInput } from "../types";
+import { EmployeeSchema } from "../models/Employee";
 import { generateSalt } from "../utils/generateSalt";
+import {COLLECTIONS} from "../database";
 
 // Get /employee/:id
-export async function getEmployee(req: Request<{ id: string }>, res: Response<WithId<Employee> | { message: string }>) {
+export async function getEmployee(
+	req: Request<{ id: string }>,
+	res: Response<WithId<Employee> | { message: string }>
+) {
 	const id: string = req.params.id;
 	try {
-		const employee = await EmployeeColl.findOne<WithId<Employee>>({
+		const employee = await COLLECTIONS.employees.findOne<WithId<Employee>>({
 			_id: new ObjectId(id),
 		});
 		if (!employee) {
@@ -25,7 +29,7 @@ export async function getEmployee(req: Request<{ id: string }>, res: Response<Wi
 // GET /employee
 export async function getAllEmployees(req: Request, res: Response) {
 	try {
-		const employees = await EmployeeColl.find<WithId<Employee>>({}).toArray();
+		const employees = await COLLECTIONS.employees.find<WithId<Employee>>({}).toArray();
 		if (!employees) {
 			res.status(404).send({ message: "no Employees found" });
 			return;
@@ -42,9 +46,29 @@ export async function getNewEmployeePage(req: Request, res: Response) {
 }
 
 // POST /employee
-export async function createEmployee(req: Request<{}, {}, EmployeeFormInput>, res: Response) {
-	const { name, title, username, password, code, hourlyRate, clockIn, clockOut } = req.body;
-	let employee: Employee = { name, title, username, password, code, hourlyRate, workHours: { clockIn, clockOut } };
+export async function createEmployee(
+	req: Request<{}, {}, EmployeeFormInput>,
+	res: Response
+) {
+	const {
+		name,
+		title,
+		username,
+		password,
+		code,
+		hourlyRate,
+		clockIn,
+		clockOut,
+	} = req.body;
+	let employee: Employee = {
+		name,
+		title,
+		username,
+		password,
+		code,
+		hourlyRate,
+		workHours: { clockIn, clockOut },
+	};
 
 	const { value, error } = EmployeeSchema.validate(employee);
 	if (error) {
@@ -65,7 +89,7 @@ export async function createEmployee(req: Request<{}, {}, EmployeeFormInput>, re
 
 	try {
 		// * please notice that you have an index on code and username that forces it to be unique
-		await EmployeeColl.insertOne(employee);
+		await COLLECTIONS.employees.insertOne(employee);
 		res.status(201).redirect("/employee");
 	} catch (e) {
 		res.status(400).send({ message: `from mongo: ${(e as Error).message}` });
@@ -73,11 +97,16 @@ export async function createEmployee(req: Request<{}, {}, EmployeeFormInput>, re
 }
 
 // GET /update-employee/:id
-export async function getUpdateEmployee(req: Request<{ id: string }>, res: Response<{ message: string }>) {
+export async function getUpdateEmployee(
+	req: Request<{ id: string }>,
+	res: Response<{ message: string }>
+) {
 	const id = req.params.id;
 
 	try {
-		const employee: WithId<Employee> | null = await EmployeeColl.findOne({ _id: new ObjectId(id) });
+		const employee: WithId<Employee> | null = await COLLECTIONS.employees.findOne({
+			_id: new ObjectId(id),
+		});
 		if (!employee) {
 			res.status(404).send({ message: "Employee not found" });
 			return;
@@ -90,14 +119,37 @@ export async function getUpdateEmployee(req: Request<{ id: string }>, res: Respo
 }
 
 // POST /update-employee/:id
-export async function updateEmployee(req: Request<{ id: string }, {}, EmployeeFormInput>, res: Response<{ message: string }>) {
+export async function updateEmployee(
+	req: Request<{ id: string }, {}, EmployeeFormInput>,
+	res: Response<{ message: string }>
+) {
 	// * for more atomization, this Function does NOT change password
 	let id = req.params.id;
-	const { name, title, username, password, code, hourlyRate, clockIn, clockOut } = req.body;
-	let employee: Employee = { name, title, username, password, code, hourlyRate, workHours: { clockIn, clockOut } };
+	const {
+		name,
+		title,
+		username,
+		password,
+		code,
+		hourlyRate,
+		clockIn,
+		clockOut,
+	} = req.body;
 
-	const { value, error } = EmployeeSchema.fork("password", (schema) => schema.optional()).validate(employee);
-	// * Here I modified the Schema so it won't check for a password
+	let employee: Employee = {
+		name,
+		title,
+		username,
+		password,
+		code,
+		hourlyRate,
+		workHours: { clockIn, clockOut },
+	};
+
+	const { value, error } = EmployeeSchema.fork("password", (schema) =>
+		schema.optional()
+	).validate(employee);
+	// * Here I modified the Schema, so it won't check for a password
 	if (error) {
 		res.status(400).send({ message: error.message });
 		return;
@@ -108,7 +160,10 @@ export async function updateEmployee(req: Request<{ id: string }, {}, EmployeeFo
 	try {
 		// * please notice that you have a database index on `code` that forces it to be unique
 		const { code, hourlyRate, name, title, username, workHours } = employee;
-		await EmployeeColl.updateOne({ _id: new ObjectId(id) }, { $set: { code, hourlyRate, name, title, username, workHours } });
+		await COLLECTIONS.employees.updateOne(
+			{ _id: new ObjectId(id) },
+			{ $set: { code, hourlyRate, name, title, username, workHours } }
+		);
 		res.status(201).redirect(`/employee/${id}`);
 	} catch (e) {
 		res.status(400).send({ message: (e as Error).message });
@@ -139,7 +194,7 @@ export async function updateEmployeePassword(
 	}
 
 	try {
-		const result = await EmployeeColl.findOne(
+		const result = await COLLECTIONS.employees.findOne(
 			{ _id: new ObjectId(id) },
 			{ projection: { password: 1, _id: 0 } } // ? is it necessary at this point ?
 		);
@@ -164,7 +219,10 @@ export async function updateEmployeePassword(
 		const salt = await generateSalt();
 		const newHashedPassword = await bcrypt.hash(newPassword, salt);
 
-		await EmployeeColl.updateOne({ _id: new ObjectId(id) }, { $set: { password: newHashedPassword } });
+		await COLLECTIONS.employees.updateOne(
+			{ _id: new ObjectId(id) },
+			{ $set: { password: newHashedPassword } }
+		);
 		res.status(201).redirect(`/employee/${id}`);
 	} catch (e) {
 		res.status(500).send({ message: (e as Error).message });
@@ -173,15 +231,20 @@ export async function updateEmployeePassword(
 }
 
 // DELETE /employee/:id
-export async function deleteEmployee(req: Request<{ id: string }>, res: Response<{ message: string }>) {
+export async function deleteEmployee(
+	req: Request<{ id: string }>,
+	res: Response<{ message: string }>
+) {
 	const id: string = req.params.id;
 	try {
-		const { deletedCount } = await EmployeeColl.deleteOne({ _id: new ObjectId(id) });
+		const { deletedCount } = await COLLECTIONS.employees.deleteOne({
+			_id: new ObjectId(id),
+		});
 		if (deletedCount !== 1) {
 			res.status(404).send({ message: "Employee not found" });
 			return;
 		}
-		res.status(200).send({ message: "deletion succeded" });
+		res.status(200).send({ message: "deletion succeeded" });
 	} catch (e) {
 		res.status(400).send({ message: (e as Error).message });
 	}

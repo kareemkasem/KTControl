@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import { Employee } from "./types";
+import {Employee, IncentiveEntry, IncentiveItem} from "./types";
 
 if (!process.env.MONGO_URI) {
 	throw new Error("mongo uri not defined");
@@ -19,4 +19,6 @@ const db = client.db("ktcontrol");
 
 export const COLLECTIONS = {
 	employees: db.collection<Employee>("employees"),
+	incentive: db.collection<IncentiveEntry>("incentive"),
+	incentiveItems: db.collection<IncentiveItem>("incentive_items")
 } as const;

@@ -1,5 +1,7 @@
-// * these commands are responsible for creating the Schema Validation and the index for the employees collection
+### The `employees` Collection:
 
+1. run the following command in the terminal to enforce the schema
+```js
 db.runCommand({
 	collMod: "employees",
 	validator: {
@@ -50,6 +52,10 @@ db.runCommand({
 		},
 	},
 });
+```
 
+2. run these commands separately in the terminal to make the code and username values unique:
+```js
 db.employees.createIndex({ code: 1 }, { unique: true });
 db.employees.createIndex({ username: 1 }, { unique: true });
+```
