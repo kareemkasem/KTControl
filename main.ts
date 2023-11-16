@@ -4,6 +4,7 @@ import helmet from "helmet";
 import { connectToDatabase } from "./database";
 
 import employeeRoutes from "./routes/Employee";
+import incentiveRoutes from "./routes/Incentive";
 
 // config
 dotenv.config();
@@ -30,6 +31,7 @@ server.get("/", (req: Request, res: Response) => {
 	res.render("index.ejs");
 });
 server.use("/employee", employeeRoutes);
+server.use("/incentive", incentiveRoutes)
 server.all("/*", (req: Request, res: Response) => {
 	res.status(404).render("not-found.ejs");
 });
