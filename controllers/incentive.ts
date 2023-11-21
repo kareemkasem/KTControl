@@ -30,7 +30,7 @@ export async function getIncentivePerMonth(
 					{
 						$project: {
 							_id: 1,
-							detials: 1,
+							details: 1,
 							"employee._id": 1,
 							"employee.title": 1,
 							"employee.name": 1,
@@ -61,9 +61,6 @@ export async function getIncentivePerEmployee(
 						$facet: {
 							employee: [
 								{ $match: { employee: code } },
-								{
-									$limit: 1,
-								},
 								{
 									$lookup: {
 										from: "employees",
@@ -171,19 +168,30 @@ export async function updateIncentiveEntry(
 
 // GET /incentive/total
 export async function getTotalIncentiveValue(
-	req: Request<{}, {}, { code: number; month: string }>,
+	req: Request<{}, {}, { code?: number; month?: string }>,
 	res: Response
 ) {
 	const { code, month } = req.body;
+	let matchQuery;
+	if (code && month) {
+		matchQuery = { employee: code, month: month };
+	} else if (code) {
+		matchQuery = { employee: code };
+	} else if (month) {
+		matchQuery = { month };
+	} else {
+		matchQuery = {};
+	}
+
 	try {
 		const totalIncentive = (
 			await COLLECTIONS.incentive
 				.aggregate([
-					{ $match: { employee: code, month } },
+					{ $match: matchQuery },
 					{
 						$lookup: {
 							from: "incentive_items",
-							localFiels: "details.item",
+							localField: "details.item",
 							foreignField: "_id",
 						},
 					},
