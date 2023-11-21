@@ -31,7 +31,7 @@ server.get("/", (req: Request, res: Response) => {
     res.render("index.ejs");
 });
 server.use("/employee", employeeRoutes);
-server.use("/incentive", incentiveRoutes)
+server.use("/incentive", incentiveRoutes);
 server.all("/*", (req: Request, res: Response) => {
     res.status(404).render("not-found.ejs");
 });

@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export type WorkHours = {
 	clockIn: string;
 	clockOut: string;
@@ -43,11 +45,27 @@ export type IncentiveItem = {
 	validTill: Date;
 };
 
+export type IncentiveItemFormInput = {
+	name: string;
+	price: number;
+	incentive: number;
+	validTill: string;
+};
+
 export type IncentiveEntry = {
 	month: string;
 	employee: number;
 	details: {
 		item: IncentiveItem;
+		quantity: number;
+	}[];
+};
+
+export type IncentiveEntryFormInput = {
+	month: string;
+	employee: number;
+	details: {
+		item: string | ObjectId;
 		quantity: number;
 	}[];
 };
