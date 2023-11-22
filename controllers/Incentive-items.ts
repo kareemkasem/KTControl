@@ -3,6 +3,7 @@ import {COLLECTIONS} from "../database";
 import {ObjectId} from "mongodb";
 import {IncentiveItem, IncentiveItemFormInput} from "../types";
 import {IncentiveItemSchema} from "../models/IncentiveItem";
+import {parseDate} from "../utils/date-parser";
 
 // GET /incentive/items
 export async function getAllIncentiveItems(req: Request, res: Response) {
@@ -28,7 +29,10 @@ export async function getUpdateIncentiveItem(
             res.status(404).send({message: "item not found"});
             return;
         }
-        res.status(200).render("Incentive/update-item", {...item});
+        res.status(200).render("Incentive/update-item", {
+            ...item,
+            validTill: parseDate(item.validTill)
+        });
     } catch (error) {
         res.status(500).send({message: (error as Error).message});
     }
@@ -47,18 +51,16 @@ export async function createIncentiveItem(
     res: Response
 ) {
     const {incentive, name, price, validTill} = req.body;
-    let incentiveItem = {
-        incentive,
+    const incentiveItem: IncentiveItem = {
         name,
-        price,
-        validTill: new Date(validTill),
-    };
-    const {value, error} = IncentiveItemSchema.validate(incentiveItem);
+        price: parseInt(price),
+        incentive: parseInt(incentive),
+        validTill: new Date(validTill)
+    }
+    const {error} = IncentiveItemSchema.validate(incentiveItem);
     if (error) {
         res.status(400).send({message: error.message});
         return;
-    } else {
-        incentiveItem = value;
     }
 
     try {
@@ -71,17 +73,22 @@ export async function createIncentiveItem(
 
 // POST /incentive/items/:id
 export async function updateIncentiveItem(
-    req: Request<{ id: string }, {}, IncentiveItem>,
+    req: Request<{ id: string }, {}, IncentiveItemFormInput>,
     res: Response
 ) {
     const id = req.params.id;
-    let incentiveItem = req.body;
-    const {value, error} = IncentiveItemSchema.validate(incentiveItem);
+    let {name, price, incentive, validTill} = req.body;
+    const incentiveItem: IncentiveItem = {
+        name,
+        price: parseInt(price),
+        incentive: parseInt(incentive),
+        validTill: new Date(validTill)
+    }
+
+    const {error} = IncentiveItemSchema.validate(incentiveItem);
     if (error) {
         res.status(400).send({message: error.message});
         return;
-    } else {
-        incentiveItem = value;
     }
 
     try {
@@ -97,7 +104,7 @@ export async function updateIncentiveItem(
             res.status(201).redirect(`/incentive/items`);
         }
     } catch (error) {
-        res.status(500).send({message: (error as Error).message});
+        res.status(500).send({message: (error as Error).message + " nigga"});
     }
 }
 

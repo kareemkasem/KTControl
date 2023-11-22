@@ -62,7 +62,6 @@ body {
     cursor: pointer;
 }
 
-
 .page-title {
     font-size: 3rem;
     text-align: center;
@@ -75,7 +74,7 @@ body {
 
 .action-list {
     display: flex;
-    margin: 50px;
+    padding: 50px;
     justify-content: center;
     gap: 30px;
     flex-wrap: wrap;
@@ -95,6 +94,13 @@ body {
     color: white;
     text-decoration: none;
     flex-shrink: 0;
+}
+
+@media (max-width: 1000px) {
+    .action {
+        width: 96%;
+        margin: initial 2%;
+    }
 }
 
 .action:hover {

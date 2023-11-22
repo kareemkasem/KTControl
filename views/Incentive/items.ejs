@@ -9,15 +9,17 @@
     %>
     <div class="incentive-item-list">
         <% items.forEach( item => { %>
-            <div id="<%= item._id %>" class="incentive-item">
-                <p><span class="incentive-item-detail">Name: </span><%= item.name %></p>
-                <p><span class="incentive-item-detail">Price: </span><%= item.price %></p>
-                <p>
-                    <span class="incentive-item-detail">Incentive: </span><%= item.incentive
+            <div data-id="<%= item._id %>" class="incentive-item">
+                <p data-id="<%= item._id %>"><span data-id="<%= item._id %>"
+                                                   class="incentive-item-detail">Name: </span><%= item.name %></p>
+                <p data-id="<%= item._id %>"><span data-id="<%= item._id %>"
+                                                   class="incentive-item-detail">Price: </span><%= item.price %></p>
+                <p data-id="<%= item._id %>">
+                    <span data-id="<%= item._id %>" class="incentive-item-detail">Incentive: </span><%= item.incentive
                     %>
                 </p>
-                <p>
-                    <span class="incentive-item-detail">Valid Till: </span><%=
+                <p data-id="<%= item._id %>">
+                    <span data-id="<%= item._id %>" class="incentive-item-detail">Valid Till: </span><%=
                         item.validTill.toDateString() %>
                 </p>
             </div>
