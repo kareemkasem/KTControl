@@ -2,7 +2,7 @@ import {ObjectId} from "mongodb";
 import {COLLECTIONS} from "../database";
 import {IncentiveEntryFormInput} from "../types";
 
-export async function serializeIncentiveDetails(
+export async function transformIncentiveDetails(
     incentiveEntry: IncentiveEntryFormInput
 ) {
     incentiveEntry.details = await Promise.all(incentiveEntry.details.map(async (i) => {

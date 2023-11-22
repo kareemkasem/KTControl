@@ -1,15 +1,6 @@
 @import url(./shared.css);
 
-.employee-page-title{
-    font-size: 3rem;
-    text-align: center;
-    background: var(--solid-gradient);
-    color: white;
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5);
-    padding: 3px 0px;
-}
-
-.employee-list{
+.employee-list {
     display: flex;
     flex-direction: row;
     margin: 20px;
@@ -18,27 +9,11 @@
     flex-wrap: wrap;
 }
 
-.employee-details{
-    justify-content: center;
-    align-items: center;
-    height: 200px;
-    flex-basis: calc(25% - 55px);
-    border-radius: 20px;
-    padding: 20px;
-    background: var(--green-light);
-    font-size: 1.25rem;
-    line-height: 10px;
-    box-shadow: 2px 2px 2px rgb(0,0,0,0.5);
-    cursor: pointer;
-    white-space: nowrap;
+.employee-name {
+    font-size: 5rem;
 }
 
-.employee-detail-title{
-font-weight: bold;
-color: var(--blue-dark);
-}
-
-#add-new-employee{
+#add-new-employee {
     font-size: 10rem;
     display: flex;
     justify-content: center;
@@ -48,186 +23,20 @@ color: var(--blue-dark);
     color: var(--blue-dark);
 }
 
-.new-employee-form-container{
-    display: flex;
-    justify-content: center;
-    justify-items: start;
-    width: 100%;
-    margin-top: 20px;
-    font-size: 1.5rem;
-    font-family: "DejaVu Sans";
-}
-
-#new-employee-form{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    min-width: 50vw;
-}
-
-.entry{
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    gap: 5px;
-    flex-direction: column;
-}
-
-.entry label{
-    white-space: nowrap;
-    font-size: 1.5rem;
-    margin-right: 10px;
-}
-
-.entry input{
-    width: 100%;
-    height: 50px;
-    display: block;
-    margin: 5px 0;
-    font-size: 1.25rem;
-    font-family: "DejaVu Sans";
-    border-radius: 10px;
-    border: 2px solid rgba(0,0,0,0.1);
-    padding-left: 5px;
-}
-
-.entry select{
-    height: 50px;
-    width: 100%;
-    margin: 5px 0;
-    font-size: 1.25rem;
-    font-family: "DejaVu Sans";
-    border-radius: 10px;
-    border: 2px solid rgba(0,0,0,0.1);
-    background: none;
-}
-
-.entry small{
-    font-size: 0.8rem;
-    color: rgba(128, 128, 128, 0.8);
-    align-self: end;
-}
-
-.submit-button{
-    height: 50px;
-    background-color: var(--blue-dark);
-    color: white;
-    border: 2px solid rgba(0,0,0,0.1);
-    border-radius: 10px;
-    font-size: 1.5rem;
-}
-
-.submit-button:hover{
-    cursor: pointer;
-    box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
-}
-
-.extended-employee-details{
-    margin: 10px auto;
-    padding: 10px 30px;
-    font-size: 2rem;
-    height: 600px;
-    width: 600px;
-}
-
-.extended-employee-details:hover{
-    cursor: default;
-}
-
-.employee-name{
-    font-size: 5rem;
-}
-
-.extended-employee-details-buttons{
-    display: inline-flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 20px;
-    align-items: end;
-}
-
-.extended-employee-details-buttons button{
-    height: 50px;
-    background-color: var(--blue-dark);
-    color: white;
-    border: 2px solid rgba(0,0,0,0.1);
-    border-radius: 10px;
-    font-size: 1.15rem;
-    width: 200px;
-}
-
-.extended-employee-details-buttons button:hover{
-    cursor: pointer;
-    box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
-}
-
-#delete-employee-modal{
-    position: fixed;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    display: none;
-    justify-content: center;
-    padding-top: 20vh;
-    z-index: 5;
-    background: rgba(0, 0, 0, 0.8);
-}
-
-.employee-modal-dialogue{
-    background-color: var(--green-light);
-    height: 120px;
-    padding: 5px 20px;
-    font-size: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    border-radius: 25px;
-}
-
-.employee-modal-buttons{
-    display: flex;
-    width: 100%;
-    gap: 5px;
-    justify-content: end;
-}
-
-.employee-modal-button{
-    height: 30px;
-    background-color: var(--blue-dark);
-    color: white;
-    border: 2px solid rgba(0,0,0,0.1);
-    border-radius: 5px;
-    font-size: 1.35rem;
-}
-
-.employee-modal-button:hover{
-    cursor: pointer;
-}
-
-#update-employee-password-modal{
-    position: fixed;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    display: none;
-    justify-content: center;
-    padding-top: 20vh;
-    z-index: 5;
-    background: rgba(0, 0, 0, 0.8);
-}
-#update-employee-password-modal .employee-modal-button{
+#update-employee-password-modal .modal-button {
     height: 45px;
 }
 
-#update-employee-password-modal input:not(#confirm-change-employee-password-button){
-    width: calc(100vw/3);
+#update-employee-password-modal input:not(#confirm-change-employee-password-button) {
+    width: calc(100vw / 3);
 }
 
-#update-employee-password-modal .employee-modal-buttons{
+#update-employee-password-modal .modal-buttons {
     margin-top: 10px;
     gap: 15px
 }
 
-#update-employee-password-modal .employee-modal-dialogue{
+#update-employee-password-modal .modal-dialogue {
     height: 240px;
     padding: 20px
 }

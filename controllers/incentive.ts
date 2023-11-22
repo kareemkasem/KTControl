@@ -3,8 +3,14 @@ import {COLLECTIONS} from "../database";
 import {IncentiveEntryFormInput} from "../types";
 import {IncentiveEntrySchema} from "../models/IncentiveEntry";
 import {ObjectId, WithId} from "mongodb";
-import {serializeIncentiveDetails} from "../utils/serializeIncentiveDetails";
+import {transformIncentiveDetails} from "../utils/transformIncentiveDetails";
 import JOI from "joi";
+
+// * Testing ✅
+// GET /incentive
+export async function getIncentiveMainPage(req: Request, res: Response) {
+    res.status(200).render("Incentive/index.ejs");
+}
 
 // * Testing ✅
 // GET /incentive/month/:month
@@ -149,7 +155,7 @@ export async function createIncentiveEntry(
     }
 
     try {
-        incentiveEntry = await serializeIncentiveDetails(incentiveEntry);
+        incentiveEntry = await transformIncentiveDetails(incentiveEntry);
         console.log(incentiveEntry);
 
         await COLLECTIONS.incentive.insertOne(incentiveEntry);
@@ -196,7 +202,7 @@ export async function updateIncentiveEntry(
     }
 
     try {
-        incentiveEntry = await serializeIncentiveDetails(incentiveEntry);
+        incentiveEntry = await transformIncentiveDetails(incentiveEntry);
 
         await COLLECTIONS.incentive.updateOne(
             {_id: new ObjectId(id)},

@@ -4,20 +4,18 @@ import {ObjectId} from "mongodb";
 import {IncentiveItem, IncentiveItemFormInput} from "../types";
 import {IncentiveItemSchema} from "../models/IncentiveItem";
 
-// * Testing ✅
 // GET /incentive/items
 export async function getAllIncentiveItems(req: Request, res: Response) {
     try {
         const items = await COLLECTIONS.incentiveItems.find().toArray();
-        res.status(200).send(items);
+        res.status(200).render("Incentive/items", {items});
     } catch (error) {
         res.status(500).send({message: (error as Error).message});
     }
 }
 
-// * Testing ✅
 // GET /incentive/items/:id
-export async function getIncentiveItem(
+export async function getUpdateIncentiveItem(
     req: Request<{ id: string }>,
     res: Response
 ) {
@@ -30,7 +28,7 @@ export async function getIncentiveItem(
             res.status(404).send({message: "item not found"});
             return;
         }
-        res.status(200).send(item);
+        res.status(200).render("Incentive/update-item", {...item});
     } catch (error) {
         res.status(500).send({message: (error as Error).message});
     }
@@ -71,17 +69,6 @@ export async function createIncentiveItem(
     }
 }
 
-// * Testing ✅
-// GET /incentive/items/update-item/:id
-export function getUpdateIncentiveItem(
-    req: Request<{ id: string }>,
-    res: Response
-) {
-    const id = req.params.id;
-    res.status(200).render("", {id}); // TODO: add the view
-}
-
-// * Testing ✅
 // POST /incentive/items/:id
 export async function updateIncentiveItem(
     req: Request<{ id: string }, {}, IncentiveItem>,
@@ -107,7 +94,7 @@ export async function updateIncentiveItem(
             res.status(404).send({message: "item not found"});
             return;
         } else {
-            res.status(201).redirect(`/incentive/items/${id}`);
+            res.status(201).redirect(`/incentive/items`);
         }
     } catch (error) {
         res.status(500).send({message: (error as Error).message});

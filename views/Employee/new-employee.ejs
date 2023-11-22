@@ -1,42 +1,42 @@
 <%- include('../shared/head'); %>
 <head>
-	<link rel="stylesheet" href="/css/employee.css" />
+    <link rel="stylesheet" href="/css/employee.css"/>
 </head>
 <%- include('../shared/nav', {title: "New Employee", link: "/employee"}) %>
-<div class="new-employee-form-container">
-	<form action="/employee" method="post" autocomplete="off" id="new-employee-form">
-		<div class="entry">
-			<label for="Title">Title: </label>
-			<select type="text" id="Title" placeholder="Title" name="title">
-				<option value="pharmacist">Pharmacist</option>
-				<option value="assistant">Assistant</option>
-				<option value="trainee">Trainee</option>
-				<option value="delivery">Delivery</option>
-				<option value="manager">Manager</option>
-				<option value="other">Other</option>
-			</select>
-		</div>
-		<div class="entry">
-			<input type="text" id="Name" placeholder="Name" name="name" />
-		</div>
-		<div class="entry">
-			<input type="number" id="Code" min="1" max="100" placeholder="Code" name="code" />
-		</div>
-		<div class="entry">
-			<input type="text" id="Username" placeholder="Username" name="username" />
-			<small>username can only have letters,numbers, "_" , and "."</small>
-		</div>
-		<div class="entry">
-			<input type="password" id="Password" placeholder="Password" name="password" />
-		</div>
-		<div class="entry">
-			<input type="number" min="100" max="2000" id="HourlyRate" placeholder="Hourly Rate" name="hourlyRate" />
-		</div>
-		<div class="entry" for="workHours">
-			<label for="workHours">Work Hours: </label>
-			<input type="time" name="clockIn" id="clockIn" />
-			<input type="time" name="clockOut" id="clockOut" />
-		</div>
-		<input type="submit" value="Submit" class="submit-button" />
-	</form>
+<div class="form-container">
+    <form action="/employee" method="post" autocomplete="off" id="new-employee-form">
+        <div class="entry">
+            <label for="Title">Title: </label>
+            <select type="text" id="Title" placeholder="Title" name="title">
+                <option value="pharmacist">Pharmacist</option>
+                <option value="assistant">Assistant</option>
+                <option value="trainee">Trainee</option>
+                <option value="delivery">Delivery</option>
+                <option value="manager">Manager</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="entry">
+            <input type="text" id="Name" placeholder="Name" name="name"/>
+        </div>
+        <div class="entry">
+            <input type="number" id="Code" min="1" max="100" placeholder="Code" name="code"/>
+        </div>
+        <div class="entry">
+            <input type="text" id="Username" placeholder="Username" name="username"/>
+            <small>username can only have letters,numbers, "_" , and "."</small>
+        </div>
+        <div class="entry">
+            <input type="password" id="Password" placeholder="Password" name="password"/>
+        </div>
+        <div class="entry">
+            <input type="number" min="100" max="2000" id="HourlyRate" placeholder="Hourly Rate" name="hourlyRate"/>
+        </div>
+        <div class="entry" for="workHours">
+            <label for="workHours">Work Hours: </label>
+            <input type="time" name="clockIn" id="clockIn"/>
+            <input type="time" name="clockOut" id="clockOut"/>
+        </div>
+        <input type="submit" value="Submit" class="submit-button"/>
+    </form>
 </div>

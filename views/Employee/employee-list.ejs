@@ -1,41 +1,41 @@
 <%- include('../shared/head'); %>
 
-	<head>
-		<link rel="stylesheet" href="/css/employee.css" />
-	</head>
-	<%- include('../shared/nav', {title: "Employees" , link: "/" }) %>
-		<main class="employee-list">
-			<% employees.forEach(e=> { %>
-				<div class="employee-details expand-employee" data-id="<%= e._id.toString() %>">
-					<p data-id="<%= e._id.toString() %>">
-						<span class="employee-detail-title" data-id="<%= e._id.toString() %>">Name:</span>
-						<%= e.name %>
-					</p>
-					<p data-id="<%= e._id.toString() %>">
-						<span class="employee-detail-title" data-id="<%= e._id.toString() %>">Job Title:</span>
-						<%= e.title %>
-					</p>
-					<p data-id="<%= e._id.toString() %>">
-						<span class="employee-detail-title" data-id="<%= e._id.toString() %>">Code:</span>
-						<%= e.code %>
-					</p>
-					<p data-id="<%= e._id.toString() %>">
-						<span class="employee-detail-title" data-id="<%=" e._id.toString()" %>">userName:</span>
-						<%= e.username %>
-					</p>
-					<p data-id="<%= e._id.toString() %>">
-						<span class="employee-detail-title" data-id="<%= e._id.toString() %>">Hourly Rate:</span>
-						<%= e.hourlyRate %>
-					</p>
-					<p data-id="<%= e._id.toString() %>">
-						<span class="employee-detail-title" data-id="<%= e._id.toString() %>"> Work Hours: </span>
-						<span data-id="<%= e._id.toString() %>">from</span>
-						<%= e.workHours.clockIn %> <span data-id="<%= e._id.toString() %>">to</span>
-							<%= e.workHours.clockOut %>
-					</p>
-				</div>
-				<%})%>
-					<div class="employee-details"><span id="add-new-employee" title="add new employee">+</span></div>
-		</main>
+<head>
+    <link rel="stylesheet" href="/css/employee.css"/>
+</head>
+<%- include('../shared/nav', {title: "Employees" , link: "/" }) %>
+<main class="employee-list">
+    <% employees.forEach(e=> { %>
+        <div class="details expand-employee" data-id="<%= e._id.toString() %>">
+            <p data-id="<%= e._id.toString() %>">
+                <span class="detail-title" data-id="<%= e._id.toString() %>">Name:</span>
+                <%= e.name %>
+            </p>
+            <p data-id="<%= e._id.toString() %>">
+                <span class="detail-title" data-id="<%= e._id.toString() %>">Job Title:</span>
+                <%= e.title %>
+            </p>
+            <p data-id="<%= e._id.toString() %>">
+                <span class="detail-title" data-id="<%= e._id.toString() %>">Code:</span>
+                <%= e.code %>
+            </p>
+            <p data-id="<%= e._id.toString() %>">
+                <span class="detail-title" data-id="<%= " e._id.toString()" %>">userName:</span>
+                <%= e.username %>
+            </p>
+            <p data-id="<%= e._id.toString() %>">
+                <span class="detail-title" data-id="<%= e._id.toString() %>">Hourly Rate:</span>
+                <%= e.hourlyRate %>
+            </p>
+            <p data-id="<%= e._id.toString() %>">
+                <span class="detail-title" data-id="<%= e._id.toString() %>"> Work Hours: </span>
+                <span data-id="<%= e._id.toString() %>">from</span>
+                <%= e.workHours.clockIn %> <span data-id="<%= e._id.toString() %>">to</span>
+                <%= e.workHours.clockOut %>
+            </p>
+        </div>
+    <% }) %>
+    <div class="details"><span id="add-new-employee" title="add new employee">+</span></div>
+</main>
 
-		<script src="/js/employee.js"></script>
+<script src="/js/employee.js"></script>

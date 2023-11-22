@@ -1,0 +1,28 @@
+<%- include('../shared/head'); %>
+
+<head>
+    <link rel="stylesheet" href="/css/incentive.css"/>
+</head>
+
+<main>
+    <%- include('../shared/nav', {title: "Incentive Items", link: "/incentive"})
+    %>
+    <div class="incentive-item-list">
+        <% items.forEach( item => { %>
+            <div id="<%= item._id %>" class="incentive-item">
+                <p><span class="incentive-item-detail">Name: </span><%= item.name %></p>
+                <p><span class="incentive-item-detail">Price: </span><%= item.price %></p>
+                <p>
+                    <span class="incentive-item-detail">Incentive: </span><%= item.incentive
+                    %>
+                </p>
+                <p>
+                    <span class="incentive-item-detail">Valid Till: </span><%=
+                        item.validTill.toDateString() %>
+                </p>
+            </div>
+        <% }) %>
+    </div>
+</main>
+
+<script src="/js/incentive.js"></script>
