@@ -8,7 +8,7 @@ import {parseDate} from "../utils/date-parser";
 // GET /incentive/items
 export async function getAllIncentiveItems(req: Request, res: Response) {
     try {
-        const items = await COLLECTIONS.incentiveItems.find().toArray();
+        const items = await COLLECTIONS.incentiveItems.find().sort({validTill: "desc"}).toArray();
         res.status(200).render("Incentive/items", {items});
     } catch (error) {
         res.status(500).send({message: (error as Error).message});
@@ -105,29 +105,5 @@ export async function updateIncentiveItem(
         }
     } catch (error) {
         res.status(500).send({message: (error as Error).message + " nigga"});
-    }
-}
-
-// * Testing ✅
-// DELETE /incentive/items/:id
-export async function deleteIncentiveItem(
-    req: Request<{ id: string }>,
-    res: Response
-) {
-    const id = req.params.id;
-
-    try {
-        const {deletedCount} = await COLLECTIONS.incentiveItems.deleteOne({
-            _id: new ObjectId(id),
-        });
-        if (deletedCount === 0) {
-            res.status(500).send({
-                message: "item wasn't deleted. Entry is possibly non-existent",
-            });
-        } else {
-            res.status(200).redirect("/");
-        }
-    } catch (error) {
-        res.status(500).send({message: (error as Error).message});
     }
 }

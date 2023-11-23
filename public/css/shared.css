@@ -223,6 +223,23 @@ body {
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
 }
 
+.add-button {
+    font-size: 10rem !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    width: 150px;
+    border-radius: 50% !important;
+    color: var(--blue-dark);
+    background: var(--green-light);
+    cursor: pointer;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.add-button:hover {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
 
 .form-container {
     display: flex;

@@ -13,16 +13,6 @@
     font-size: 5rem;
 }
 
-#add-new-employee {
-    font-size: 10rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    color: var(--blue-dark);
-}
-
 #update-employee-password-modal .modal-button {
     height: 45px;
 }

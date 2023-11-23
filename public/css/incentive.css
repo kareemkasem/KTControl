@@ -7,12 +7,12 @@
     gap: 20px;
     align-items: center;
     flex-wrap: wrap;
+    height: 150px;
 }
 
 .incentive-item {
     justify-content: center;
     align-items: center;
-    height: 150px;
     border-radius: 20px;
     padding: 20px;
     background: var(--green-light);
@@ -21,6 +21,7 @@
     box-shadow: 2px 2px 2px rgb(0, 0, 0, 0.5);
     white-space: nowrap;
     cursor: pointer;
+    height: 100%;
 }
 
 .incentive-item-detail {

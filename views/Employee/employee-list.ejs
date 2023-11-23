@@ -20,7 +20,7 @@
                 <%= e.code %>
             </p>
             <p data-id="<%= e._id.toString() %>">
-                <span class="detail-title" data-id="<%= " e._id.toString()" %>">userName:</span>
+                <span class="detail-title" data-id="<%= e._id.toString() %>">userName:</span>
                 <%= e.username %>
             </p>
             <p data-id="<%= e._id.toString() %>">
@@ -35,7 +35,7 @@
             </p>
         </div>
     <% }) %>
-    <div class="details"><span id="add-new-employee" title="add new employee">+</span></div>
+    <span id="add-new-employee" class="add-button" title="add new employee">+</span>
 </main>
 
 <script src="/js/employee.js"></script>
