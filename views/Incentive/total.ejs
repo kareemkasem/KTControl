@@ -1,0 +1,38 @@
+<%- include('../shared/head'); %>
+
+<head>
+	<link rel="stylesheet" href="/css/incentive.css" />
+</head>
+
+<%- include('../shared/nav', {title: "Calculate Totals", link: "/incentive"}) %>
+<main>
+	<div class="form-container">
+		<div class="entry">
+			<label for="month">Select Month:</label>
+			<input list="months" placeholder="Search Month" id="month" />
+			<datalist id="months">
+				<option value="Any">Any</option>
+				<% months.forEach(month => { %>
+				<option value="<%=month%>"><%=month%></option>
+				<% }) %>
+			</datalist>
+		</div>
+		<div class="entry">
+			<label for="employee">Select Employee Code:</label>
+			<input list="employees" placeholder="Search Employee" id="employee" />
+			<datalist id="employees">
+				<option value="Any">Any</option>
+				<% employees.forEach(employee => { %>
+				<option value="<%=employee%>"><%=employee%></option>
+				<% }) %>
+			</datalist>
+		</div>
+		<div class="entry">
+			<label for="output">Total:</label>
+			<input type="text" id="output" value="---" style="text-align: center" />
+		</div>
+		<button class="submit-button" id="calculate-total-button">Calculate</button>
+	</div>
+</main>
+
+<script src="/js/incentive.js"></script>

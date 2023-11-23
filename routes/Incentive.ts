@@ -4,6 +4,7 @@ import {
 	getIncentiveMainPage,
 	getIncentivePerEmployee,
 	getIncentivePerMonth,
+	getTotalIncentivePage,
 	getTotalIncentiveValue,
 	getUpdateIncentiveEntry,
 	updateIncentiveEntry,
@@ -31,6 +32,7 @@ Router.post("/items", createIncentiveItem);
 Router.get("/items/:id", getUpdateIncentiveItem);
 Router.post("/items/:id", updateIncentiveItem);
 
-Router.get("/total", getTotalIncentiveValue);
+Router.get("/total", getTotalIncentivePage);
+Router.get("/total/data", getTotalIncentiveValue);
 
 export default Router;

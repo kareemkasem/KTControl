@@ -249,7 +249,7 @@ body {
     font-family: "DejaVu Sans", serif;
     flex-direction: column;
     gap: 10px;
-    width: 50vw;
+    width: 50%;
     margin: 25px 25vw 0 25vw;
 }
 
