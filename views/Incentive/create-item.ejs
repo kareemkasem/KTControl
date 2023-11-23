@@ -1,19 +1,14 @@
 <%- include('../shared/head'); %>
 <head>
-	<link rel="stylesheet" href="/css/incentive.css" />
+	<link rel="stylesheet" href="/css/employee.css" />
 </head>
-<%- include('../shared/nav', {title: "Edit Incentive Item", link:
-"/incentive/items"}) %>
+<%- include('../shared/nav', {title: "New Incentive Item", link:
+"/Incentive/items"}) %>
 <div class="form-container">
-	<form
-		action="<%= `/incentive/items/${_id.toString()}` %>"
-		method="post"
-		autocomplete="off"
-		class="form"
-	>
+	<form action="/incentive/items" method="post" autocomplete="off">
 		<div class="entry">
 			<label for="name">Name: </label>
-			<input type="text" id="name" name="name" value="<%= name %>" />
+			<input type="text" id="name" name="name" placeholder="name" />
 		</div>
 		<div class="entry">
 			<label for="price">Price: </label>
@@ -23,7 +18,7 @@
 				id="price"
 				min="1"
 				name="price"
-				value="<%= price %>"
+				placeholder="price"
 			/>
 		</div>
 		<div class="entry">
@@ -33,21 +28,14 @@
 				step="0.01"
 				id="incentive"
 				name="incentive"
-				value="<%= incentive %>"
+				placeholder="incentive"
 			/>
 		</div>
 		<div class="entry">
 			<label for="validTill">Valid Till: </label>
-			<input
-				type="date"
-				id="validTill"
-				name="validTill"
-				value="<%= validTill
-                   %>"
-			/>
+			<input type="date" id="validTill" name="validTill" value="2022-12-25" />
 			<small>Date format is Month/Day/Year</small>
 		</div>
 		<input type="submit" value="Submit" class="submit-button" />
 	</form>
 </div>
-<script src="/js/incentive.js"></script>
