@@ -86,13 +86,15 @@ export async function getIncentivePerEmployee(
 								},
 								{
 									$project: {
-										_id: "employee._id",
-										title: "employee.title",
-										name: "employee.name",
-										code: "employee.code",
-										hourlyRate: "employee.hourlyRate",
+										_id: { $first: "$employee._id" },
+										title: { $first: "$employee.title" },
+										name: { $first: "$employee.name" },
+										code: { $first: "$employee.code" },
+										hourlyRate: { $first: "$employee.hourlyRate" },
 									},
-									// please notice that this stage will be applied to each item in the array "employee" which contains only one value in this case and will be extracted later via `$unwind`
+								},
+								{
+									$limit: 1,
 								},
 							],
 							data: [
