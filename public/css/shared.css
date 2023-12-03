@@ -258,7 +258,7 @@ body {
     color: var(--blue-dark)
 }
 
-.radio-container{
+.radio-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -267,26 +267,22 @@ body {
     border-bottom: 1px solid rgba(0, 0, 0, 0.5);
 }
 
-.radio-container .radios{
+.radio-container .radios {
     display: flex;
     line-height: 1rem;
     align-items: center;
     font-size: 1.2rem;
 }
 
-.radio-container .radios input{
+.radio-container .radios input {
     margin-left: 20px;
 }
 
-.radio-container .radios input:nth-of-type(1){
-    margin-left: 0;
-}
-
-.radio-container button{
+.radio-container button {
     width: 25% !important;
     margin: 0;
 }
 
-.radio-select{
+.radio-select {
     display: none;
 }
