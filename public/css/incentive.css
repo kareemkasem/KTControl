@@ -43,3 +43,23 @@
     font-size: 1.2rem;
     cursor: pointer;
 }
+
+.incentive-details-employee{
+    line-height: 1rem;
+}
+
+.incentive-details-month{
+    display: flex;
+    justify-content: center;
+    color: white;
+    background-color: var(--blue-dark);
+    padding: 5px 0;
+}
+
+.incentive-details-item{
+    margin: 15px
+}
+
+.incentive-details-item:hover{
+    cursor: default;
+}

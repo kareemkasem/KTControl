@@ -2,8 +2,8 @@ const incentiveItemList = document.querySelector(".incentive-item-list");
 const updateIncentiveItemModal = document.querySelector(
 	"#update-incentive-item-modal"
 );
-const month = document.querySelector("#month");
-const employee = document.querySelector("#employee");
+const month = document.querySelector("#months");
+const employee = document.querySelector("#employees");
 const calculateTotalButton = document.querySelector("#calculate-total-button");
 const calculationOutputField = document.querySelector("#output");
 

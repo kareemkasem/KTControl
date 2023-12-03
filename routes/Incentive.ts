@@ -1,6 +1,7 @@
 import express from "express";
 import {
 	createIncentiveEntry,
+	getIncentiveDetailsPage,
 	getIncentiveMainPage,
 	getIncentivePerEmployee,
 	getIncentivePerMonth,
@@ -21,6 +22,7 @@ const Router = express.Router();
 
 Router.get("/", getIncentiveMainPage);
 
+Router.get("/details", getIncentiveDetailsPage);
 Router.get("/month/:month", getIncentivePerMonth);
 Router.get("/employee/:code", getIncentivePerEmployee);
 Router.post("/create-entry", createIncentiveEntry);

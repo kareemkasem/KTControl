@@ -11,6 +11,28 @@ export async function getIncentiveMainPage(req: Request, res: Response) {
 	res.status(200).render("Incentive/index.ejs");
 }
 
+// GET /incentive/details
+export async function getIncentiveDetailsPage(req: Request, res: Response) {
+	try {
+		const { months, employees } = (
+			await COLLECTIONS.incentive
+				.aggregate<{ _id: null; months: string[]; employees: number[] }>([
+					{
+						$group: {
+							_id: null,
+							months: { $addToSet: "$month" },
+							employees: { $addToSet: "$employee" },
+						},
+					},
+				])
+				.toArray()
+		)[0];
+		res.status(200).render("Incentive/details.ejs", { months, employees });
+	} catch (error) {
+		res.status(400).send({ message: (error as Error).message });
+	}
+}
+
 // * Testing ✅
 // GET /incentive/month/:month
 export async function getIncentivePerMonth(
@@ -41,7 +63,12 @@ export async function getIncentivePerMonth(
 							details: 1,
 							"employee._id": 1,
 							"employee.title": 1,
-							"employee.name": 1,
+							"employee.name": 1, // {
+							// 	$group: {
+							// 		_id: { month: "$month" },
+							// 		entries: { $push: { item: "$details" } },
+							// 	},
+							// },
 							"employee.code": 1,
 						},
 					},
@@ -60,7 +87,6 @@ export async function getIncentivePerMonth(
 	}
 }
 
-// * Testing ✅
 // GET /incentive/employee/:code
 export async function getIncentivePerEmployee(
 	req: Request<{ code: string }>,
@@ -99,7 +125,52 @@ export async function getIncentivePerEmployee(
 							],
 							data: [
 								{ $match: { employee: code } },
-								{ $project: { _id: 1, month: 1, details: 1 } },
+								{ $unwind: "$details" },
+								{
+									$project: {
+										_id: 1,
+										month: 1,
+										item: "$details.item",
+										quantity: "$details.quantity",
+									},
+								},
+								{
+									$lookup: {
+										from: "incentive_items",
+										localField: "item",
+										foreignField: "_id",
+										as: "item",
+									},
+								},
+								{
+									$project: {
+										_id: 1,
+										month: 1,
+										item: { $first: "$item" },
+										quantity: 1,
+									},
+								},
+								{
+									$addFields: {
+										"item.quantity": "$quantity",
+										"item.total": {
+											$multiply: ["$quantity", "$item.incentive"],
+										},
+									},
+								},
+								{
+									$group: {
+										_id: { month: "$month" },
+										items: { $addToSet: "$item" },
+									},
+								},
+								{
+									$project: {
+										_id: 0,
+										month: "$_id.month",
+										items: 1,
+									},
+								},
 							],
 						},
 					},
@@ -250,7 +321,7 @@ export async function getTotalIncentiveValue(
 	try {
 		const totalIncentive = (
 			await COLLECTIONS.incentive
-				.aggregate([
+				.aggregate<WithId<{ value: number }>>([
 					{ $match: matchQuery },
 					{ $unwind: "$details" },
 					{
@@ -279,7 +350,7 @@ export async function getTotalIncentiveValue(
 					},
 				])
 				.toArray()
-		)[0] as WithId<{ value: number }>;
+		)[0];
 
 		res.status(200).send({ total: totalIncentive?.value || 0 });
 	} catch (error) {

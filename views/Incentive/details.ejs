@@ -1,0 +1,42 @@
+<%- include('../shared/head'); %>
+
+    <head>
+        <link rel="stylesheet" href="/css/incentive.css" />
+    </head>
+
+    <%- include('../shared/nav', {title: "Details" , link: "/incentive" }) %>
+        <main>
+            <div class="form-container">
+                <div>
+                    <div class="entry radio-select" id="month-filter">
+                        <select id="month">
+                            <% months.forEach(month=> { %>
+                                <option value="<%= month %>">
+                                    <%= month %>
+                                </option>
+                                <% }) %>
+                        </select>
+                    </div>
+                    <div class="entry radio-select" id="employee-filter">
+                        <select id="employee">
+                            <% employees.forEach(employee=> { %>
+                                <option value="<%= employee %>">
+                                    <%= employee %>
+                                </option>
+                                <% }) %>
+                        </select>
+                    </div>
+                </div>
+                <div class="enrty radio-container">
+                    <form class="radios" autocomplete="off">
+                        <input type="radio" name="filter" value="employee" checked />
+                        <p> By employee</p>
+                        <input type="radio" name="filter" value="month" />
+                        <p> By month</p>
+                    </form>
+                    <button class="submit-button" id="filter-search-button">Search</button>
+                </div>
+                <div id="filter-search-result"></div>
+        </main>
+
+        <script src="/js/incentive-details.js"></script>
