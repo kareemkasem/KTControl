@@ -32,9 +32,11 @@ function updateElementState() {
 
 function updateResultELementState(input) {
 	if (state.filter === "employee") {
-		const dataMarkup = input.data.map((i) => {
-			const itemsMarkup = i.items.map(
-				(item) => `
+		const dataMarkup = input.data
+			.map((i) => {
+				const itemsMarkup = i.items
+					.map(
+						(item) => `
             <div class="incentive-item incentive-details-item">
                 <p><span class="incentive-item-detail">Name: </span>${
 									item.name
@@ -56,12 +58,14 @@ function updateResultELementState(input) {
 								).toDateString()}</p>
             </div>
             `
-			);
-			return `
-                <h2 class="incentive-details-month">${i.month}</h2>
-                ${itemsMarkup.join("")}
+					)
+					.join("");
+				return `
+                <h2 class="incentive-details-header">${i.month}</h2>
+                ${itemsMarkup}
             `;
-		});
+			})
+			.join("");
 
 		filterSearchResult.innerHTML = `
         <div class="incentive-details-employee">
@@ -75,21 +79,51 @@ function updateResultELementState(input) {
             <span class="detail-title">Code:</span> ${input.employee.code}
         </p>
         <p>
-            <span class="detail-title">Hourly Rate:</span> ${
-							input.employee.hourlyRate
-						}
+            <span class="detail-title">Hourly Rate:</span> ${input.employee.hourlyRate}
         </p>
     </div>
     <hr>
-    ${dataMarkup.join("")}
+    ${dataMarkup}
         `;
 	}
-	console.log(input);
 
 	if (state.filter === "month") {
-		filterSearchResult.innerHTML = `
-
-        `;
+		const markup = input
+			.map((entry) => {
+				console.log(entry);
+				const itemsMarkup = entry.items
+					.map(
+						(item) => `
+            <div class="incentive-item incentive-details-item">
+                <p><span class="incentive-item-detail">Name: </span>${
+									item.name
+								}</p>
+                <p><span class="incentive-item-detail">Price: </span>${
+									item.price
+								}</p>
+                <p><span class="incentive-item-detail">Incentive: </span>${
+									item.incentive
+								}</p>
+                <p><span class="incentive-item-detail">Quantity: </span>${
+									item.quantity
+								}</p>
+                <p><span class="incentive-item-detail">Total: </span>${
+									item.total
+								}</p>
+                <p><span class="incentive-item-detail">Valid Till: </span>${new Date(
+									item.validTill
+								).toDateString()}</p>
+            </div>
+            `
+					)
+					.join("");
+				return `
+			<h2 class="incentive-details-header">${entry.employee}</h2>
+			${itemsMarkup}
+			`;
+			})
+			.join("");
+		filterSearchResult.innerHTML = markup;
 	}
 }
 

@@ -42,39 +42,65 @@ export async function getIncentivePerMonth(
 	const month = req.params.month;
 
 	try {
-		const queryResult = (
-			await COLLECTIONS.incentive
-				.aggregate([
-					{
-						$match: { month },
+		const queryResult = await COLLECTIONS.incentive
+			.aggregate([
+				{ $match: { month } },
+				{ $unwind: "$details" },
+				{
+					$project: {
+						_id: 1,
+						employee: 1,
+						item: "$details.item",
+						quantity: "$details.quantity",
 					},
-					{
-						$lookup: {
-							from: "employees",
-							localField: "employee",
-							foreignField: "code",
-							as: "employee",
+				},
+				{
+					$lookup: {
+						from: "incentive_items",
+						localField: "item",
+						foreignField: "_id",
+						as: "item",
+					},
+				},
+				{
+					$project: {
+						_id: 1,
+						employee: 1,
+						item: { $first: "$item" },
+						quantity: 1,
+					},
+				},
+				{
+					$addFields: {
+						"item.quantity": "$quantity",
+						"item.total": {
+							$multiply: ["$quantity", "$item.incentive"],
 						},
 					},
-					{ $unwind: "$employee" },
-					{
-						$project: {
-							_id: 1,
-							details: 1,
-							"employee._id": 1,
-							"employee.title": 1,
-							"employee.name": 1, // {
-							// 	$group: {
-							// 		_id: { month: "$month" },
-							// 		entries: { $push: { item: "$details" } },
-							// 	},
-							// },
-							"employee.code": 1,
-						},
+				},
+				{
+					$lookup: {
+						from: "employees",
+						localField: "employee",
+						foreignField: "code",
+						as: "employee",
 					},
-				])
-				.toArray()
-		)[0];
+				},
+				{
+					$group: {
+						_id: { employee: "$employee" },
+						items: { $addToSet: "$item" },
+					},
+				},
+				{
+					$project: {
+						_id: 0,
+						employee: { $first: "$_id.employee.name" },
+						items: 1,
+					},
+				},
+			])
+			.toArray();
 
 		if (!queryResult) {
 			res.status(404).send({ message: "month isn't found" });
