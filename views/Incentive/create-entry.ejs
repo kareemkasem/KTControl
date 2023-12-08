@@ -1,0 +1,44 @@
+<%- include('../shared/head'); %>
+<head>
+	<link rel="stylesheet" href="/css/shared.css" />
+</head>
+<%- include('../shared/nav', {title: "New Incentive Entry", link: "/Incentive"})
+%> <%if(employees.length === 0 || items.length === 0){ %>
+<div style="display: flex; justify-content: center; font-size: 1.5rem">
+	<p>No entries found</p>
+</div>
+<% } else { %>
+<div class="form-container">
+	<form action="/incentive/create-entry" method="post" autocomplete="off">
+		<div class="entry radio-select">
+			<label for="employee">Employee:</label>
+			<select id="employee" name="employee">
+				<% employees.forEach(employee=> { %>
+				<option value="<%= employee.code %>"><%= employee.name %></option>
+				<% }) %>
+			</select>
+		</div>
+		<div class="entry">
+			<label for="month">Month:</label>
+			<input type="month" name="month" value="<%= month %>" />
+		</div>
+		<div class="entry">
+			<label for="items[]">Items:</label>
+			<div class="entry-vertical">
+				<h3 class="heading">Name</h3>
+				<h3 class="heading">Incentive</h3>
+				<h3 class="heading">Quantity</h3>
+			</div>
+			<% items.forEach(item => {%>
+			<div class="entry-vertical">
+				<input type="hidden" name="items" value="<%= item._id%>" disabled />
+				<input type="text" value="<%= item.name%>" disabled />
+				<input type="number" value="<%= item.incentive%>" disabled />
+				<input type="number" name="quantities" value="0" min="0" />
+			</div>
+			<% }) %>
+		</div>
+		<input type="submit" value="Submit" class="submit-button" />
+	</form>
+	<% } %>
+</div>

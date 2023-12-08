@@ -1,71 +1,69 @@
-import {ObjectId} from "mongodb";
+import { ObjectId } from "mongodb";
 
 export type WorkHours = {
-    clockIn: string;
-    clockOut: string;
+	clockIn: string;
+	clockOut: string;
 };
 
 export type Employee = {
-    code: number;
-    name: string;
-    username: string;
-    password: string;
-    title:
-        | "manager"
-        | "pharmacist"
-        | "assistant"
-        | "trainee"
-        | "delivery"
-        | "other";
-    hourlyRate: number;
-    workHours: WorkHours;
+	code: number;
+	name: string;
+	username: string;
+	password: string;
+	title:
+		| "manager"
+		| "pharmacist"
+		| "assistant"
+		| "trainee"
+		| "delivery"
+		| "other";
+	hourlyRate: number;
+	workHours: WorkHours;
 };
 
 export type EmployeeFormInput = {
-    code: number;
-    name: string;
-    username: string;
-    password: string;
-    title:
-        | "manager"
-        | "pharmacist"
-        | "assistant"
-        | "trainee"
-        | "delivery"
-        | "other";
-    hourlyRate: number;
-    clockIn: string;
-    clockOut: string;
+	code: number;
+	name: string;
+	username: string;
+	password: string;
+	title:
+		| "manager"
+		| "pharmacist"
+		| "assistant"
+		| "trainee"
+		| "delivery"
+		| "other";
+	hourlyRate: number;
+	clockIn: string;
+	clockOut: string;
 };
 
 export type IncentiveItem = {
-    name: string;
-    price: number;
-    incentive: number;
-    validTill: Date;
+	name: string;
+	price: number;
+	incentive: number;
+	validTill: Date;
 };
 
 export type IncentiveItemFormInput = {
-    name: string;
-    price: string;
-    incentive: string;
-    validTill: string;
+	name: string;
+	price: string;
+	incentive: string;
+	validTill: string;
 };
 
 export type IncentiveEntry = {
-    month: string;
-    employee: number;
-    details: {
-        item: IncentiveItem;
-        quantity: number;
-    }[];
+	month: string;
+	employee: number;
+	details: {
+		item: ObjectId;
+		quantity: number;
+	}[];
 };
 
 export type IncentiveEntryFormInput = {
-    month: string;
-    employee: number;
-    details: {
-        item: string | ObjectId;
-        quantity: number;
-    }[];
+	month: string;
+	employee: string;
+	items: string[];
+	quantities: string[];
 };

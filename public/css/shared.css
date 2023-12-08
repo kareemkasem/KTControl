@@ -114,9 +114,41 @@ body {
     justify-content: center;
     gap: 5px;
     flex-direction: column;
+    margin: 10px 0;
 }
 
-.entry label {
+.entry-vertical {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 10px;
+}
+
+.entry .heading{
+    width: 100%;
+    height: 50px;
+    display: block;
+    font-size: 1.5rem;
+    font-family: "DejaVu Sans", serif;
+    padding-left: 5px;
+    text-align: center;
+    color: var(--green-dark);
+    background: var(--green-light);
+    border-radius: 15px;
+    line-height: 50px;
+    margin: 0;
+}
+
+.entry-vertical input{
+    text-align: center;
+}
+
+.entry-vertical input:disabled{
+    background-color: white;
+    color: black;
+}
+
+.entry label{
     white-space: nowrap;
     font-size: 1.5rem;
     margin-right: 10px;
@@ -281,8 +313,4 @@ body {
 .radio-container button {
     width: 25% !important;
     margin: 0;
-}
-
-.radio-select {
-    display: none;
 }

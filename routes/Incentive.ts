@@ -1,6 +1,7 @@
 import express from "express";
 import {
 	createIncentiveEntry,
+	getCreateIncentiveEntry,
 	getIncentiveDetailsPage,
 	getIncentiveMainPage,
 	getIncentivePerEmployee,
@@ -25,6 +26,7 @@ Router.get("/", getIncentiveMainPage);
 Router.get("/details", getIncentiveDetailsPage);
 Router.get("/month/:month", getIncentivePerMonth);
 Router.get("/employee/:code", getIncentivePerEmployee);
+Router.get("/create-entry", getCreateIncentiveEntry);
 Router.post("/create-entry", createIncentiveEntry);
 Router.get("/update-entry/:id", getUpdateIncentiveEntry);
 Router.post("/update-entry/:id", updateIncentiveEntry);
