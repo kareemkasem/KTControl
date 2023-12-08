@@ -11,7 +11,7 @@
             <label for="months">Select Month:</label>
             <select id="months">
                 <option value="Any">Any</option>
-                <% months.forEach(month => { %>
+                <% months && months.forEach(month => { %>
                     <option value="<%= month %>"><%= month %></option>
                 <% }) %>
             </select>
@@ -20,7 +20,7 @@
             <label for="employees">Select Employee Code:</label>
             <select id="employees">
                 <option value="Any">Any</option>
-                <% employees.forEach(employee => { %>
+                <% employees && employees.forEach(employee => { %>
                     <option value="<%= employee %>"><%= employee %></option>
                 <% }) %>
             </select>
