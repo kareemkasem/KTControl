@@ -14,7 +14,7 @@ export async function getIncentiveMainPage(req: Request, res: Response) {
 // GET /incentive/details
 export async function getIncentiveDetailsPage(req: Request, res: Response) {
     try {
-        const {months, employees} = (
+        const queryResult = (
             await COLLECTIONS.incentive
                 .aggregate<{ _id: null; months: string[]; employees: number[] }>([
                     {
@@ -27,6 +27,10 @@ export async function getIncentiveDetailsPage(req: Request, res: Response) {
                 ])
                 .toArray()
         )[0];
+
+        const months = queryResult?.months || undefined
+        const employees = queryResult?.employees || undefined
+
         res.status(200).render("Incentive/details.ejs", {months, employees});
     } catch (error) {
         res.status(400).send({message: (error as Error).message});
