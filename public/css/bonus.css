@@ -1,0 +1,25 @@
+@import url("./shared.css");
+
+.bonus-header-buttons{
+    width: 50%;
+    margin: 30px 25%
+}
+
+.bonus-header-buttons button {
+    background-color: var(--green-light);
+    border: 0;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+.bonus-header-buttons a {
+    font-weight: bold;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: var(--green-dark) !important;
+}
+
+@media(max-width: 1000px) {
+    .bonus-header-buttons{
+        width: 100%;
+        margin: 0 5px
+    }
+}
