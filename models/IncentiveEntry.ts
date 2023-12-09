@@ -7,7 +7,7 @@ export const IncentiveEntrySchema = JOI.object<
 >({
 	month: JOI.string()
 		.required()
-		.regex(/(0[1-9]|1[0-2])\/(19|20)\d{2}/),
+		.regex(/(0[1-9]|1[0-2])-(19|20)\d{2}/),
 	employee: JOI.number().min(1).max(10000).required(),
 	details: JOI.array()
 		.items(

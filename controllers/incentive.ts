@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { db } from "../database";
 import { IncentiveEntry, IncentiveEntryFormInput } from "../types";
 import { IncentiveEntrySchema } from "../models/IncentiveEntry";
