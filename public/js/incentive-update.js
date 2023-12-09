@@ -15,7 +15,7 @@ detailsPageLoadingButton.addEventListener("click", async (e) => {
 			"/incentive/details/update?" +
 			new URLSearchParams({
 				employee: employee.value,
-				month: month.value.split("-").reverse().join("/"),
+				month: month.value.split("-").reverse().join("-"),
 			})
 	);
 

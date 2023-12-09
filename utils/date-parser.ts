@@ -17,5 +17,5 @@ export function monthParser(date: Date = new Date()) {
 	if (month.length === 1) {
 		month = "0" + month;
 	}
-	return month + "/" + year;
+	return month + "-" + year;
 }
