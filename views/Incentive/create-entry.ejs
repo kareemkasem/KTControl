@@ -20,9 +20,18 @@
 		</div>
 		<div class="entry">
 			<label for="month">Month:</label>
-			<input type="month" name="month" value="<%= month %>" />
+			<input
+				type="month"
+				name="month"
+				id="month"
+				value="<%= month %>"
+				disabled
+			/>
 		</div>
-		<div class="entry">
+		<button class="submit-button" id="details-load-button" type="button">
+			Load Details
+		</button>
+		<div class="entry" id="details-incentive-items-list" style="display: none">
 			<label for="items[]">Items:</label>
 			<div class="entry-vertical">
 				<h3 class="heading">Name</h3>
@@ -30,15 +39,23 @@
 				<h3 class="heading">Quantity</h3>
 			</div>
 			<% items.forEach(item => {%>
-			<div class="entry-vertical">
-				<input type="hidden" name="items" value="<%= item._id%>" disabled />
+			<div class="entry-vertical details-incentive-item">
+				<input type="hidden" name="items" value="<%= item._id%>" />
 				<input type="text" value="<%= item.name%>" disabled />
 				<input type="number" value="<%= item.incentive%>" disabled />
 				<input type="number" name="quantities" value="0" min="0" />
 			</div>
 			<% }) %>
 		</div>
-		<input type="submit" value="Submit" class="submit-button" />
+		<input
+			type="submit"
+			value="Submit"
+			class="submit-button"
+			id="submit-button"
+			style="display: none"
+		/>
 	</form>
 	<% } %>
 </div>
+
+<script src="/js/incentive-update.js"></script>

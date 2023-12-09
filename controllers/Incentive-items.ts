@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { COLLECTIONS } from "../database";
+import { db } from "../database";
 import { ObjectId } from "mongodb";
 import { IncentiveItem, IncentiveItemFormInput } from "../types";
 import { IncentiveItemSchema } from "../models/IncentiveItem";
@@ -8,7 +8,7 @@ import { parseDate } from "../utils/date-parser";
 // GET /incentive/items
 export async function getAllIncentiveItems(req: Request, res: Response) {
 	try {
-		const items = await COLLECTIONS.incentiveItems
+		const items = await db.incentiveItems
 			.find()
 			.sort({ validTill: "desc" })
 			.toArray();
@@ -25,7 +25,7 @@ export async function getUpdateIncentiveItem(
 ) {
 	const id = req.params.id;
 	try {
-		const item = await COLLECTIONS.incentiveItems.findOne({
+		const item = await db.incentiveItems.findOne({
 			_id: new ObjectId(id),
 		});
 		if (!item) {
@@ -66,7 +66,7 @@ export async function createIncentiveItem(
 	}
 
 	try {
-		await COLLECTIONS.incentiveItems.insertOne(incentiveItem);
+		await db.incentiveItems.insertOne(incentiveItem);
 		res.status(200).redirect("/incentive/items");
 	} catch (error) {
 		res.status(500).send({ message: (error as Error).message });
@@ -94,11 +94,10 @@ export async function updateIncentiveItem(
 	}
 
 	try {
-		const { matchedCount, modifiedCount } =
-			await COLLECTIONS.incentiveItems.updateOne(
-				{ _id: new ObjectId(id) },
-				{ $set: { ...incentiveItem } }
-			);
+		const { matchedCount, modifiedCount } = await db.incentiveItems.updateOne(
+			{ _id: new ObjectId(id) },
+			{ $set: { ...incentiveItem } }
+		);
 		if (matchedCount !== 1 && modifiedCount !== 1) {
 			res.status(404).send({ message: "item not found" });
 			return;

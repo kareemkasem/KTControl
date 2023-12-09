@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { COLLECTIONS } from "../database";
+import { db } from "../database";
 import { IncentiveEntry, IncentiveEntryFormInput } from "../types";
 import { IncentiveEntrySchema } from "../models/IncentiveEntry";
 import { ObjectId, WithId } from "mongodb";
 import JOI from "joi";
 import generateHTMLMonthString from "../utils/generateHTMLMonthString";
+import { monthParser } from "../utils/date-parser";
 
 // GET /incentive
 export async function getIncentiveMainPage(req: Request, res: Response) {
@@ -15,7 +16,7 @@ export async function getIncentiveMainPage(req: Request, res: Response) {
 export async function getIncentiveDetailsPage(req: Request, res: Response) {
 	try {
 		const queryResult = (
-			await COLLECTIONS.incentive
+			await db.incentive
 				.aggregate<{ _id: null; months: string[]; employees: number[] }>([
 					{
 						$group: {
@@ -37,6 +38,56 @@ export async function getIncentiveDetailsPage(req: Request, res: Response) {
 	}
 }
 
+// GET /incentive/details?employee={}?month={}
+export async function getIncentiveDetails(
+	req: Request<{}, {}, {}, { employee: string; month: string }>,
+	res: Response
+) {
+	const employee = +req.query.employee;
+	const month = req.query.month;
+
+	try {
+		const queryResult = await db.incentive
+			.aggregate([
+				{
+					$match: {
+						employee,
+						month,
+					},
+				},
+				{
+					$unwind: "$details",
+				},
+				{
+					$lookup: {
+						from: "incentive_items",
+						localField: "details.item",
+						foreignField: "_id",
+						as: "details.item",
+					},
+				},
+				{
+					$project: {
+						item: { $first: "$details.item" },
+						quantity: "$details.quantity",
+					},
+				},
+				{
+					$project: {
+						_id: "$item._id",
+						name: "$item.name",
+						incentive: "$item.incentive",
+						quantity: "$quantity",
+					},
+				},
+			])
+			.toArray();
+		res.status(200).send(queryResult);
+	} catch (error) {
+		res.status(500).send({ message: (error as Error).message });
+	}
+}
+
 // GET /incentive/month/:month
 export async function getIncentivePerMonth(
 	req: Request<{ month: string }>,
@@ -45,7 +96,7 @@ export async function getIncentivePerMonth(
 	const month = req.params.month;
 
 	try {
-		const queryResult = await COLLECTIONS.incentive
+		const queryResult = await db.incentive
 			.aggregate([
 				{ $match: { month } },
 				{ $unwind: "$details" },
@@ -125,7 +176,7 @@ export async function getIncentivePerEmployee(
 
 	try {
 		const queryResult = (
-			await COLLECTIONS.incentive
+			await db.incentive
 				.aggregate([
 					{
 						$facet: {
@@ -219,15 +270,14 @@ export async function getIncentivePerEmployee(
 	}
 }
 
-// * Testing ✅
 // GET /incentive/create-entry
 export async function getCreateIncentiveEntry(req: Request, res: Response) {
 	try {
-		const employees = await COLLECTIONS.employees.find({}).toArray();
+		const employees = await db.employees.find({}).toArray();
 
 		const month = generateHTMLMonthString();
 
-		const items = await COLLECTIONS.incentiveItems
+		const items = await db.incentiveItems
 			.find({ validTill: { $gte: new Date() } })
 			.toArray();
 
@@ -239,26 +289,28 @@ export async function getCreateIncentiveEntry(req: Request, res: Response) {
 	}
 }
 
-//* Testing ✅
 // POST /incentive/create-entry
-export async function createIncentiveEntry(
+export async function createOrUpdateIncentiveEntry(
 	req: Request<{}, {}, IncentiveEntryFormInput>,
 	res: Response
 ) {
 	let incentiveEntry: IncentiveEntry = {
-		month: req.body.month.split("-").reverse().join("/"),
+		month: monthParser(),
 		employee: parseInt(req.body.employee),
 		details: req.body.items.map((item, index) => ({
 			item: new ObjectId(item),
 			quantity: parseInt(req.body.quantities[index]),
 		})),
 	};
+
+	incentiveEntry.details = incentiveEntry.details.filter((x) => x.quantity > 0);
+
 	const { error } = IncentiveEntrySchema.fork("details", () => {
 		return JOI.array()
 			.items(
 				JOI.object({
 					item: JOI.optional(),
-					quantity: JOI.number().min(1).max(10000),
+					quantity: JOI.number().min(0).max(10000),
 				})
 			)
 			.required();
@@ -270,55 +322,12 @@ export async function createIncentiveEntry(
 	}
 
 	try {
-		await COLLECTIONS.incentive.insertOne(incentiveEntry);
-		res.status(201).redirect("/incentive");
-	} catch (error) {
-		res.status(500).send({ message: (error as Error).message });
-	}
-}
-
-// * Testing ✅
-// GET /incentive/update-entry/:id
-export function getUpdateIncentiveEntry(
-	req: Request<{ id: string }>,
-	res: Response
-) {
-	const id = req.params.id;
-	res.status(200).render("", { id }); // TODO add the view
-}
-
-//* Testing ✅
-// POST /incentive/update-entry/:id
-export async function updateIncentiveEntry(
-	req: Request<{ id: string }, {}, IncentiveEntryFormInput>,
-	res: Response
-) {
-	const id = req.params.id;
-	let incentiveEntry = req.body;
-	const { value, error } = IncentiveEntrySchema.fork("details", () => {
-		return JOI.array()
-			.items(
-				JOI.object({
-					item: JOI.string().required(),
-					quantity: JOI.number().min(1).max(10000).required(),
-				})
-			)
-			.required();
-	}).validate(incentiveEntry);
-
-	if (error) {
-		res.status(400).send({ message: error.message });
-		return;
-	} else {
-		incentiveEntry = value as IncentiveEntryFormInput;
-	}
-
-	try {
-		await COLLECTIONS.incentive.updateOne(
-			{ _id: new ObjectId(id) },
-			{ $set: { ...incentiveEntry } }
+		await db.incentive.updateOne(
+			{ employee: incentiveEntry.employee, month: incentiveEntry.month },
+			{ $set: { ...incentiveEntry } },
+			{ upsert: true }
 		);
-		res.status(201).redirect(`/incentive/employee/${incentiveEntry.employee}`);
+		res.status(201).redirect("/incentive");
 	} catch (error) {
 		res.status(500).send({ message: (error as Error).message });
 	}
@@ -330,7 +339,7 @@ export async function getTotalIncentivePage(req: Request, res: Response) {
 		const queryResult:
 			| { _id: null; months: string[]; employees: number[] }
 			| undefined = (
-			await COLLECTIONS.incentive
+			await db.incentive
 				.aggregate<{ _id: null; months: string[]; employees: number[] }>([
 					{
 						$group: {
@@ -364,7 +373,7 @@ export async function getTotalIncentiveValue(
 
 	try {
 		const totalIncentive = (
-			await COLLECTIONS.incentive
+			await db.incentive
 				.aggregate<WithId<{ value: number }>>([
 					{ $match: matchQuery },
 					{ $unwind: "$details" },

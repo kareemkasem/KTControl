@@ -20,12 +20,10 @@ export async function connectToDatabase() {
 	}
 }
 
-const db = client.db("ktcontrol");
+const dbClient = client.db("ktcontrol");
 
-export const COLLECTIONS = {
-	employees: db.collection<Employee>("employees"),
-	incentive: db.collection<IncentiveEntry | IncentiveEntryFormInput>(
-		"incentive"
-	),
-	incentiveItems: db.collection<IncentiveItem>("incentive_items"),
+export const db = {
+	employees: dbClient.collection<Employee>("employees"),
+	incentive: dbClient.collection<IncentiveEntry>("incentive"),
+	incentiveItems: dbClient.collection<IncentiveItem>("incentive_items"),
 } as const;

@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { Employee, EmployeeFormInput } from "../types";
 import { EmployeeSchema } from "../models/Employee";
 import { generateSalt } from "../utils/generateSalt";
-import { COLLECTIONS } from "../database";
+import { db } from "../database";
 
 // Get /employee/:id
 export async function getEmployee(
@@ -13,7 +13,7 @@ export async function getEmployee(
 ) {
 	const id: string = req.params.id;
 	try {
-		const employee = await COLLECTIONS.employees.findOne<WithId<Employee>>({
+		const employee = await db.employees.findOne<WithId<Employee>>({
 			_id: new ObjectId(id),
 		});
 		if (!employee) {
@@ -29,9 +29,7 @@ export async function getEmployee(
 // GET /employee
 export async function getAllEmployees(req: Request, res: Response) {
 	try {
-		const employees = await COLLECTIONS.employees
-			.find<WithId<Employee>>({})
-			.toArray();
+		const employees = await db.employees.find<WithId<Employee>>({}).toArray();
 		if (!employees) {
 			res.status(404).send({ message: "no Employees found" });
 			return;
@@ -91,7 +89,7 @@ export async function createEmployee(
 
 	try {
 		// * please notice that you have an index on code and username that forces it to be unique
-		await COLLECTIONS.employees.insertOne(employee);
+		await db.employees.insertOne(employee);
 		res.status(201).redirect("/employee");
 	} catch (e) {
 		res.status(400).send({ message: `from mongo: ${(e as Error).message}` });
@@ -106,10 +104,9 @@ export async function getUpdateEmployee(
 	const id = req.params.id;
 
 	try {
-		const employee: WithId<Employee> | null =
-			await COLLECTIONS.employees.findOne({
-				_id: new ObjectId(id),
-			});
+		const employee: WithId<Employee> | null = await db.employees.findOne({
+			_id: new ObjectId(id),
+		});
 		if (!employee) {
 			res.status(404).send({ message: "Employee not found" });
 			return;
@@ -163,7 +160,7 @@ export async function updateEmployee(
 	try {
 		// * please notice that you have a database index on `code` that forces it to be unique
 		const { code, hourlyRate, name, title, username, workHours } = employee;
-		await COLLECTIONS.employees.updateOne(
+		await db.employees.updateOne(
 			{ _id: new ObjectId(id) },
 			{ $set: { code, hourlyRate, name, title, username, workHours } }
 		);
@@ -197,7 +194,7 @@ export async function updateEmployeePassword(
 	}
 
 	try {
-		const result = await COLLECTIONS.employees.findOne(
+		const result = await db.employees.findOne(
 			{ _id: new ObjectId(id) },
 			{ projection: { password: 1, _id: 0 } } // ? is it necessary at this point ?
 		);
@@ -222,7 +219,7 @@ export async function updateEmployeePassword(
 		const salt = await generateSalt();
 		const newHashedPassword = await bcrypt.hash(newPassword, salt);
 
-		await COLLECTIONS.employees.updateOne(
+		await db.employees.updateOne(
 			{ _id: new ObjectId(id) },
 			{ $set: { password: newHashedPassword } }
 		);
@@ -240,7 +237,7 @@ export async function deleteEmployee(
 ) {
 	const id: string = req.params.id;
 	try {
-		const { deletedCount } = await COLLECTIONS.employees.deleteOne({
+		const { deletedCount } = await db.employees.deleteOne({
 			_id: new ObjectId(id),
 		});
 		if (deletedCount !== 1) {
