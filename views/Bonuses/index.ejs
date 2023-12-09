@@ -17,14 +17,26 @@
 <% } else { %>
 <div class="list">
 	<% data.forEach(i => { %>
-	<div class="details <%= i.type === "deduction" ? "error" : "" %>">
+	<div class="details bonus <%= i.type === "deduction" ? "error" : "" %>">
 		<p><span class="detail-title">Type:</span> <%=i.type%></p>
 		<p><span class="detail-title">Employee:</span> <%=i.employee%></p>
 		<p><span class="detail-title">Month:</span> <%=i.month%></p>
 		<p><span class="detail-title">Amount:</span> <%=i.type === "deduction" ? i.amount * -1 : i.amount%></p>
 		<p><span class="detail-title">Comment:</span> <%=i.comment%></p>
+		<button class="delete-button" data-id="<%= i._id %>">delete</button>
 	</div>
 	<% }) %>
 </div>
 <% } %>
+<div id="delete-entry-modal" class="modal">
+    <div class="modal-dialogue">
+        <p>Are you sure you want to delete this entry ?</p>
+        <div class="modal-buttons">
+            <button class="modal-button" id="confirm-delete-entry-button">Confirm</button>
+            <button class="modal-button" id="cancel-delete-entry-button">Cancel</button>
+        </div>
+    </div>
+</div>
 <body>
+
+<script src="/js/bonus.js"></script>

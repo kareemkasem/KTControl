@@ -9,7 +9,11 @@ import { ObjectId } from "mongodb";
 export async function getMainPage(req: Request, res: Response) {
 	const currentMonth = monthParser();
 	try {
-		const data = await db.bonuses.find({ month: currentMonth }).toArray();
+		const data = await db.bonuses
+			.find({ month: currentMonth })
+			.sort({ _id: -1 })
+			.toArray();
+		//* side note: _id in mongo stores timestamps :)
 		res.status(200).render("Bonuses/index.ejs", { data });
 	} catch (error) {
 		res.status(500).send({ message: (error as Error).message });
@@ -69,6 +73,17 @@ export async function createBonus(
 		await db.bonuses.insertOne(bonus);
 		res.status(201).redirect("/bonuses");
 		return;
+	} catch (error) {
+		res.status(500).send({ error: (error as Error).message });
+	}
+}
+
+// DELETE /bonuses/:id
+export async function deleteBonus(req: Request<{ id: string }>, res: Response) {
+	const id = req.params.id;
+	try {
+		await db.bonuses.deleteOne({ _id: new ObjectId(id) });
+		res.status(200).send({ message: "success" });
 	} catch (error) {
 		res.status(500).send({ error: (error as Error).message });
 	}
