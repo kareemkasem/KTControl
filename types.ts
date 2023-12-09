@@ -67,3 +67,17 @@ export type IncentiveEntryFormInput = {
 	items: string[];
 	quantities: string[];
 };
+
+export type Bonus = {
+	type: "bonus" | "deduction";
+	amount: number;
+	comment: string;
+	month: string;
+};
+
+export type BonusFormInput = {
+	type: string;
+	amount: string;
+	comment: string;
+	month: string;
+};

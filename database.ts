@@ -1,10 +1,5 @@
 import { MongoClient } from "mongodb";
-import {
-	Employee,
-	IncentiveEntry,
-	IncentiveEntryFormInput,
-	IncentiveItem,
-} from "./types";
+import { Bonus, Employee, IncentiveEntry, IncentiveItem } from "./types";
 
 if (!process.env.MONGO_URI) {
 	throw new Error("mongo uri not defined");
@@ -15,15 +10,16 @@ const client = new MongoClient(process.env.MONGO_URI);
 export async function connectToDatabase() {
 	try {
 		await client.connect();
-	} catch (e) {
-		console.log(e);
+	} catch (error) {
+		console.log(error);
 	}
 }
 
-const dbClient = client.db("ktcontrol");
+const database = client.db("ktcontrol");
 
 export const db = {
-	employees: dbClient.collection<Employee>("employees"),
-	incentive: dbClient.collection<IncentiveEntry>("incentive"),
-	incentiveItems: dbClient.collection<IncentiveItem>("incentive_items"),
+	employees: database.collection<Employee>("employees"),
+	incentive: database.collection<IncentiveEntry>("incentive"),
+	incentiveItems: database.collection<IncentiveItem>("incentive_items"),
+	bonuses: database.collection<Bonus>("bonus"),
 } as const;
