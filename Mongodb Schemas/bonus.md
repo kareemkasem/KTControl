@@ -24,6 +24,10 @@ db.runCommand({
                 month: {
                     bsonType: "string",
                     description: "must be a string and is required"
+                },
+                employee: {
+                    bsonType: "string",
+                    description: "must be a string and is required"
                 }
             }
         }

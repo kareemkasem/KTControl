@@ -73,11 +73,13 @@ export type Bonus = {
 	amount: number;
 	comment: string;
 	month: string;
+	employee: string;
 };
 
 export type BonusFormInput = {
-	type: string;
+	type: "bonus" | "deduction";
 	amount: string;
 	comment: string;
 	month: string;
+	employee: string;
 };

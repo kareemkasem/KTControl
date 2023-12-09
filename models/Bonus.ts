@@ -8,4 +8,5 @@ export const BonusSchema = JOI.object<Bonus>({
 	month: JOI.string()
 		.regex(/(0[1-9]|1[0-2])-(19|20)\d{2}/)
 		.required(),
+	employee: JOI.string().required(),
 });
