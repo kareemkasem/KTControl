@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { Bonus, BonusFormInput, Employee } from "../types";
 import { BonusSchema } from "../models/Bonus";
 import { db } from "../database";
-import { ObjectId } from "mongodb";
 
 export async function createBonus(
 	req: Request<{}, {}, BonusFormInput>,
@@ -30,6 +29,8 @@ export async function createBonus(
 	} catch (error) {
 		res.status(500).send({ error: (error as Error).message });
 	}
+
+	if (bonus.type === "deduction") bonus.amount = bonus.amount * -1;
 
 	try {
 		await db.bonuses.insertOne(bonus);
