@@ -5,18 +5,41 @@
     cursor: auto;
 }
 
+.bonus-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    margin: 30px 25%;
+    background-color: var(--blue-light);
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    font-weight: bold;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: var(--blue-dark) !important;
+    border: 0;
+    border-radius: 25px;
+    padding: 10px 0;
+}
+
+@media (max-width: 1000px) {
+    .bonus-header{
+        width: 90%;
+        margin: 20px 5%;
+    }
+}
+
 .bonus-header-buttons{
     width: 50%;
     margin: 30px 25%
 }
 
-.bonus-header-buttons button {
+.bonus-header-buttons a {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
     background-color: var(--green-light);
     border: 0;
     box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-}
-
-.bonus-header-buttons a {
     font-weight: bold;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: var(--green-dark) !important;

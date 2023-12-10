@@ -88,3 +88,25 @@ export async function deleteBonus(req: Request<{ id: string }>, res: Response) {
 		res.status(500).send({ error: (error as Error).message });
 	}
 }
+
+// GET /bonuses/history
+export async function getHistoryPage(req: Request, res: Response) {
+	try {
+		let data = await db.bonuses
+			.aggregate<{ _id: string; details: Bonus[] }>([
+				{ $group: { _id: "$month", details: { $push: "$$ROOT" } } },
+			])
+			.toArray();
+
+		// I'm sorting the values by converting the "month" property to a date timestamp to make sure newer months always come first. of course I'm adding "01-" to formulate an actual date\
+
+		data.sort((a, b) => {
+			return (
+				new Date("01-" + b._id).getTime() - new Date("01-" + a._id).getTime()
+			);
+		});
+		res.status(200).render("Bonuses/history.ejs", { data });
+	} catch (error) {
+		res.status(500).send({ message: (error as Error).message });
+	}
+}

@@ -1,0 +1,26 @@
+<%- include('../shared/head'); %>
+<head>
+	<link rel="stylesheet" href="/css/shared.css" />
+	<link rel="stylesheet" href="/css/bonus.css" />
+</head>
+<%- include('../shared/nav', {title: "History", link: "/bonuses"}) %>
+<body>
+	<%if(data.length === 0){ %>
+	<div style="display: flex; justify-content: center; font-size: 1.5rem">
+		<p>No entries found</p>
+	</div>
+	<% } else { %> <% data.forEach(item => { %>
+	<h1 class="bonus-header"><%= item._id%></h1>
+	<div class="list">
+		<% item.details.forEach(i => {%>
+		<div class="details bonus">
+			<p><span class="detail-title">Type:</span> <%=i.type%></p>
+			<p><span class="detail-title">Employee:</span> <%=i.employee%></p>
+			<p><span class="detail-title">Month:</span> <%=i.month%></p>
+			<p><span class="detail-title">Amount:</span> <%=i.amount%></p>
+			<p><span class="detail-title">Comment:</span> <%=i.comment%></p>
+		</div>
+		<% }) %>
+	</div>
+	<% })} %>
+</body>
