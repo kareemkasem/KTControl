@@ -87,7 +87,7 @@ export type BonusFormInput = {
 
 export type attendanceEntry = {
     employee: number,
-    day: Date,
+    day: string, //date string
     clockIn: Date,
     clockOut?: Date
 }

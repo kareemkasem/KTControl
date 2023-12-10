@@ -15,8 +15,8 @@ db.runCommand({
                     description: "must be a number and is required"
                 },
                 day: {
-                    bsonType: "date",
-                    description: "must be a date and is required"
+                    bsonType: "string",
+                    description: "must be a string and is required"
                 },
                 clockIn: {
                     bsonType: "date",
