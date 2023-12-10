@@ -7,8 +7,8 @@
 <%- include('../shared/nav', {title: "Bonuses and Deductions", link: "/"}) %>
 <body>
     <div class="entry-vertical bonus-header-buttons">
-        <button class="submit-button"><a class="link-reset" href="/bonuses/new">Add New Entry</a></button>
-        <Button class="submit-button"><a class="link-reset" href="/bonuses/history">View Full history</a></Button>
+        <a class="submit-button link-reset" href="/bonuses/new">Add New Entry</a>
+        <a class="submit-button link-reset" href="/bonuses/history">View Full history</a>
     </div>
 <%if(data.length === 0){ %>
 <div style="display: flex; justify-content: center; font-size: 1.5rem">
@@ -20,10 +20,8 @@
 	<div class="details bonus <%= i.type === "deduction" ? "error" : "" %>">
 		<p><span class="detail-title">Type:</span> <%=i.type%></p>
 		<p><span class="detail-title">Employee:</span> <%=i.employee%></p>
-		<p><span class="detail-title">Month:</span> <%=i.month%></p>
-		<p><span class="detail-title">Amount:</span> <%=i.type === "deduction" ? i.amount * -1 : i.amount%></p>
+		<p><span class="detail-title">Amount:</span> <%=i.type%></p>
 		<p><span class="detail-title">Comment:</span> <%=i.comment%></p>
-		<button class="delete-button" data-id="<%= i._id %>">delete</button>
 	</div>
 	<% }) %>
 </div>
