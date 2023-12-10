@@ -101,7 +101,7 @@ export async function getHistoryPage(req: Request, res: Response) {
 			])
 			.toArray();
 
-		// I'm sorting the values by converting the "month" property to a date timestamp to make sure newer months always come first. of course I'm adding "01-" to formulate an actual date\
+		// I'm sorting the values by converting the "month" property to a date timestamp to make sure newer months always come first. of course, I'm adding "01-" to formulate an actual date
 
 		data.sort((a, b) => {
 			return (

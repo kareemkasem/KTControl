@@ -83,5 +83,4 @@ export type BonusFormInput = {
 	comment: string;
 	month: string;
 	employee: string;
-	code: string;
 };
