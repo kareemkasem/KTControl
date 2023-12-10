@@ -70,6 +70,16 @@ body {
     color: white
 }
 
+.error-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 56px;
+    background: var(--red-dark);
+    color: white;
+    border-radius: 10px;
+}
+
 .modal {
     position: fixed;
     top: 0;
@@ -149,7 +159,7 @@ body {
 @media (max-width: 1000px) {
     .action {
         width: 96%;
-        margin: initial 2%;
+        margin: 10px 2%;
     }
 }
 

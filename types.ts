@@ -93,8 +93,6 @@ export type attendanceEntry = {
 }
 
 export type attendanceEntryFormInput = {
-    employee: number,
-    day: string,
-    clockIn: string,
-    clockOut?: string
+    employee: string,
+    password: string,
 }
