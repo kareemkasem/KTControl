@@ -28,6 +28,10 @@ db.runCommand({
                 employee: {
                     bsonType: "string",
                     description: "must be a string and is required"
+                },
+                code: {
+                    bsonType: "number",
+                    description: "must be a number and is required"
                 }
             }
         }

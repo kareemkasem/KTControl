@@ -43,21 +43,9 @@ export async function createBonus(
 	req: Request<{}, {}, BonusFormInput>,
 	res: Response
 ) {
-	let bonus: Bonus = {
-		...req.body,
-		amount: +req.body.amount,
-		month: monthParser(),
-	};
-	const { value, error } = BonusSchema.validate(bonus);
-	if (error) {
-		res.status(400).send({ error: error.message });
-		return;
-	}
-	bonus = value;
-
 	try {
-		const employeeInDatabase = await db.employees.findOne<Employee>({
-			name: bonus.employee,
+		var employeeInDatabase = await db.employees.findOne<Employee>({
+			name: req.body.employee,
 		});
 		if (!employeeInDatabase) {
 			res.status(404).send({ error: "employee not found" });
@@ -65,12 +53,27 @@ export async function createBonus(
 		}
 	} catch (error) {
 		res.status(500).send({ error: (error as Error).message });
+		return;
 	}
+
+	let bonus: Bonus = {
+		...req.body,
+		amount: +req.body.amount,
+		month: monthParser(),
+		code: employeeInDatabase!.code,
+	};
+
+	const { value, error } = BonusSchema.validate(bonus);
+	if (error) {
+		res.status(400).send({ error: error.message });
+		return;
+	}
+	bonus = value;
 
 	if (bonus.type === "deduction") bonus.amount = bonus.amount * -1;
 
 	try {
-		await db.bonuses.insertOne(bonus);
+		await db.bonuses.insertOne({ ...bonus });
 		res.status(201).redirect("/bonuses");
 		return;
 	} catch (error) {

@@ -74,6 +74,7 @@ export type Bonus = {
 	comment: string;
 	month: string;
 	employee: string;
+	code: number;
 };
 
 export type BonusFormInput = {
@@ -82,4 +83,5 @@ export type BonusFormInput = {
 	comment: string;
 	month: string;
 	employee: string;
+	code: string;
 };
