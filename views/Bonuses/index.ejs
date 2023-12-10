@@ -1,32 +1,33 @@
 <%- include('../shared/head'); %>
 <head>
-	<link rel="stylesheet" href="/css/shared.css" />
-    <link rel="stylesheet" href="/css/bonus.css" />
+    <link rel="stylesheet" href="/css/shared.css"/>
+    <link rel="stylesheet" href="/css/bonus.css"/>
 
 </head>
 <%- include('../shared/nav', {title: "Bonuses and Deductions", link: "/"}) %>
 <body>
-    <div class="entry-vertical bonus-header-buttons">
-        <a class="submit-button link-reset" href="/bonuses/new">Add New Entry</a>
-        <a class="submit-button link-reset" href="/bonuses/history">View Full history</a>
+<div class="entry-vertical bonus-header-buttons">
+    <a class="submit-button link-reset" href="/bonuses/new">Add New Entry</a>
+    <a class="submit-button link-reset" href="/bonuses/history">View Full history</a>
+</div>
+<% if(data.length === 0){ %>
+    <div style="display: flex; justify-content: center; font-size: 1.5rem">
+        <p>No entries found</p>
     </div>
-<%if(data.length === 0){ %>
-<div style="display: flex; justify-content: center; font-size: 1.5rem">
-	<p>No entries found</p>
-</div>
 <% } else { %>
-<div class="list">
-	<% data.forEach(i => { %>
-	<div class="details bonus <%= i.type === "deduction" ? "error" : "" %>">
-		<p><span class="detail-title">Type:</span> <%=i.type%></p>
-		<p><span class="detail-title">Employee:</span> <%=i.employee%></p>
-		<p><span class="detail-title">Month:</span> <%=i.month%></p>
-		<p><span class="detail-title">Amount:</span> <%=i.type === "deduction" ? i.amount * -1 : i.amount%></p>
-		<p><span class="detail-title">Comment:</span> <%=i.comment%></p>
-		<button class="delete-button" data-id="<%= i._id %>">delete</button>
-	</div>
-	<% }) %>
-</div>
+    <div class="list">
+        <% data.forEach(i => { %>
+            <div class="details bonus <%= i.type === "deduction" ? "error" : "" %>">
+                <p><span class="detail-title">Type:</span> <%= i.type %></p>
+                <p><span class="detail-title">Employee:</span> <%= i.employee %></p>
+                <p><span class="detail-title">Month:</span> <%= i.month %></p>
+                <p><span class="detail-title">Amount:</span> <%= i.type === "deduction" ? i.amount * -1 : i.amount %>
+                </p>
+                <p><span class="detail-title">Comment:</span> <%= i.comment %></p>
+                <button class="delete-button" data-id="<%= i._id %>">delete</button>
+            </div>
+        <% }) %>
+    </div>
 <% } %>
 <div id="delete-entry-modal" class="modal">
     <div class="modal-dialogue">
@@ -37,6 +38,6 @@
         </div>
     </div>
 </div>
-<body>
+</body>
 
 <script src="/js/bonus.js"></script>
