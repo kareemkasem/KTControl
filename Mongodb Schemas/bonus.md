@@ -1,16 +1,17 @@
-### The `employees` Collection:
+### The `bonus` Collection:
 
 1. run the following command in the terminal to enforce the schema
+
 ```js
 db.runCommand({
-    collMod: "bonus", 
+    collMod: "bonus",
     validator: {
         $jsonSchema: {
             bsonType: "object",
-            required: ["type","amount","comment","month"],
+            required: ["type", "amount", "comment", "month"],
             properties: {
                 type: {
-                    enum: ["bonus","deduction"],
+                    enum: ["bonus", "deduction"],
                     description: "must be 'bonus' or 'deduction' and is required"
                 },
                 amount: {
