@@ -2,6 +2,16 @@
 <head>
     <link rel="stylesheet" href="/css/shared.css"/>
 </head>
-<main style="display: flex; height: 100vh; width: 100vw; font-size: 5rem; justify-content: center; align-items: center">
-    under Development ⚙️
+<main class="main-page">
+    <h1 class="logo">Attendance</h1>
+    <form class="form-container" method="post" action="/attendance">
+        <div class="entry">
+            <input name="code" id="code" type="number" placeholder="Please Enter Your Code">
+        </div>
+        <div class="entry">
+            <input name="password" id="password" type="password" placeholder="Please Enter Your Password">
+        </div>
+        <input type="submit" value="Register" class="submit-button"/>
+    </form>
+    <a class="hover-tooltip" href="/">Are you the admin ?</a>
 </main>
