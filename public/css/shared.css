@@ -74,10 +74,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 56px;
     background: var(--red-dark);
     color: white;
     border-radius: 10px;
+    padding: 0 10px;
 }
 
 .modal {
