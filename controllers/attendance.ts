@@ -4,11 +4,32 @@ import {db} from "../database";
 import bcrypt from "bcryptjs";
 import workHoursDiff from "../utils/workHoursDiff";
 
+const MONTHLY_OFF_DAYS = 4 // to be overridden via admin configuration
+const MAX_TIME_DIFFERENCE = 120 // to be overridden via admin configuration
 const EMPLOYEE_DELAY_LIMIT = 30 // to be overridden via admin configuration
-const MAX_EMPLOYEE_DELAY_LIMIT = 120 // to be overridden via admin configuration
+const DELAY_DEDUCTION_FACTOR = 2 // to be overridden via admin configuration
+const EMPLOYEE_OVERTIME_MINIMUM = 15 // to be overridden via admin configuration
+const OVERTIME_BONUS_FACTOR = 1.5 // to be overridden via admin configuration
 const state: { error: string | null, submissionTrials: number } = {
     error: null,
     submissionTrials: 0
+}
+
+function calculateDeductionOrBonusPerMinute(minutes: number, employeeHourlyRate: number, type: "delay" | "overtime"): number {
+    const today = new Date()
+    const daysInThisMonth = new Date(today.getFullYear(), today.getMonth(), 0).getDate()
+    const minutesWorthPerMonth = employeeHourlyRate / (daysInThisMonth - MONTHLY_OFF_DAYS) / 60
+
+    let calculationFactor;
+    if (type === "delay") {
+        calculationFactor = DELAY_DEDUCTION_FACTOR * -1
+    } else if (type === "overtime") {
+        calculationFactor = OVERTIME_BONUS_FACTOR
+    } else {
+        throw new Error("type of operation in calculateDeductionOrBonusPerMinute isn't correct")
+    }
+
+    return minutes * minutesWorthPerMonth * calculationFactor
 }
 
 // GET /attendance
@@ -66,7 +87,7 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
             // check for time difference
             if (state.submissionTrials === 0) {
                 const timeDifference = workHoursDiff(employeeInDateBase.workHours.clockIn)
-                if (Math.abs(timeDifference) >= MAX_EMPLOYEE_DELAY_LIMIT) {
+                if (Math.abs(timeDifference) >= MAX_TIME_DIFFERENCE) {
                     state.error = `WARNING: the timestamp submitted for employee ${employeeInDateBase.name} has a ${timeDifference} minutes difference from original clock In. submit again if you're sure the code is correct.`
                     state.submissionTrials++
                     res.status(404).redirect("/attendance/employees")
@@ -74,12 +95,12 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                 }
             }
 
-            // TODO add penalty check
             await db.attendance.insertOne({employee, day: today, clockIn: timeStamp})
+            // TODO add penalty check
         } else {
             // check If it's a resubmission
             if (existingEntryForToday.clockOut) {
-                state.error = `employee ${employeeInDateBase.name} has already registered clockIn and clockOut today. if you're sure about this operation please contact the admin to register your overtime`
+                state.error = `WARNING: Employee ${employeeInDateBase.name} has already registered clockIn and clockOut today. if you're sure about this operation please contact the system administrator to register your overtime manually`
                 res.status(404).redirect("/attendance/employees")
                 return;
             }
@@ -87,7 +108,7 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
             // check the time difference
             if (state.submissionTrials === 0) {
                 const timeDifference = workHoursDiff(employeeInDateBase.workHours.clockOut)
-                if (Math.abs(timeDifference) >= MAX_EMPLOYEE_DELAY_LIMIT) {
+                if (Math.abs(timeDifference) >= MAX_TIME_DIFFERENCE) {
                     state.error = `WARNING: the timestamp submitted for employee ${employeeInDateBase.name} has a ${timeDifference} minutes difference from original clock out. submit again if you're sure the code is correct.`
                     state.submissionTrials++
                     res.status(404).redirect("/attendance/employees")
@@ -98,11 +119,11 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
             // check for overnight shifts
             const existingEntryForYesterday = await db.attendance.findOne<attendanceEntry>({employee, day: yesterday})
             if (existingEntryForYesterday && existingEntryForYesterday.clockOut) {
-                // TODO add penalty check
                 await db.attendance.updateOne({employee, day: yesterday}, {$set: {clockOut: timeStamp}})
-            } else {
                 // TODO add penalty check
+            } else {
                 await db.attendance.updateOne({employee, day: today}, {$set: {clockOut: timeStamp}})
+                // TODO add penalty check
             }
         }
     } catch (error) {
