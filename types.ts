@@ -75,6 +75,7 @@ export type Bonus = {
     month: string;
     employee: string;
     code: number;
+    approved?: boolean
 };
 
 export type BonusFormInput = {

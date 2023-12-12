@@ -8,7 +8,7 @@ db.runCommand({
     validator: {
         $jsonSchema: {
             bsonType: "object",
-            required: ["type", "amount", "comment", "month"],
+            required: ["type", "amount", "comment", "month", "employee", "code", "approved"],
             properties: {
                 type: {
                     enum: ["bonus", "deduction"],
@@ -33,6 +33,10 @@ db.runCommand({
                 code: {
                     bsonType: "number",
                     description: "must be a number and is required"
+                },
+                approved: {
+                    bsonType: "bool",
+                    description: "must be a boolean and is required"
                 }
             }
         }
