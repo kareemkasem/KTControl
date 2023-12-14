@@ -114,8 +114,8 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
             })
             if (existingEntryForYesterday && !existingEntryForYesterday.clockOut) {
                 // * CASE 4: overnight for employee whose shift isn't overnight and spent an overnight
-                if (workHoursDiff(employee.workHours.clockIn, employee.workHours.clockOut, "hours") >= 1) {
-                    if (checkIfTimeDifferenceExceedLimit(timeDifference.clockOut + 40 * 60, employee.name)) {
+                if (workHoursDiff(employee.workHours.clockIn, employee.workHours.clockOut) > 0) {
+                    if (checkIfTimeDifferenceExceedLimit(timeDifference.clockOut + 24 * 60, employee.name)) {
                         res.status(400).redirect("/attendance/employees")
                         return;
                     }
@@ -183,7 +183,8 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                     })
                 }
 
-                // Normal clocIn, Employee came early and an overtime bonus is automatically submitted awaiting approval
+                // Normal clockIn, Employee came early and an overtime bonus is automatically submitted awaiting
+                // approval
                 if (timeDifference.clockIn <= 0 && timeDifference.clockIn >= EMPLOYEE_OVERTIME_MINIMUM) {
                     await db.bonuses.insertOne({
                         employee: employee.name,
