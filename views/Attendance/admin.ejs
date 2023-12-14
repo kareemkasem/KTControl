@@ -3,8 +3,8 @@
     <link rel="stylesheet" href="/css/shared.css"/>
 </head>
 <%- include('../shared/nav', {title: "Attendance Dashboard", link: "/attendance"}) %>
-<main style="display: flex; height: calc(100vh - 61px); width: 100vw; font-size: 5rem; justify-content: center;
-align-items:
-center">
-    Under Development ⚙️
+<main class="action-list">
+    <a class="action" href="/attendance/history">View History</a>
+    <a class="action" href="/attendance/overtime">Approve Overtime</a>
+    <a class="action" href="/attendance/dayoff">Add a Day Off</a>
 </main>
