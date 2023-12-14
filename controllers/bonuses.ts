@@ -43,11 +43,12 @@ export async function createBonus(
     req: Request<{}, {}, BonusFormInput>,
     res: Response
 ) {
+    let employee: Employee | null = null;
     try {
-        var employeeInDatabase = await db.employees.findOne<Employee>({
+        employee = await db.employees.findOne<Employee>({
             name: req.body.employee,
         });
-        if (!employeeInDatabase) {
+        if (!employee) {
             res.status(404).send({error: "employee not found"});
             return;
         }
@@ -60,7 +61,7 @@ export async function createBonus(
         ...req.body,
         amount: +req.body.amount,
         month: monthParser(),
-        code: employeeInDatabase!.code,
+        code: employee!.code,
     };
 
     const {value, error} = BonusSchema.validate(bonus);
