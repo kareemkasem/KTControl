@@ -38,7 +38,7 @@ function calculateDeductionOrBonusPerMinute(minutes: number, employeeHourlyRate:
 function checkIfTimeDifferenceExceedLimit(timeDifference: number, name: string): boolean {
     if (state.submissionTrials === 0) {
         if (Math.abs(timeDifference) >= MAX_TIME_DIFFERENCE) {
-            state.error = `WARNING: the timestamp submitted for employee ${name} has a ${timeDifference} minutes difference from the supposed value. submit again if you're sure the code is correct. please note that overtime has to be approved by your admin.`
+            state.error = `WARNING: the timestamp submitted for employee ${name} has a ${timeDifference} minutes difference from the nearest entry. submit again if you're sure the code is correct. please note that overtime has to be approved by your admin.`
             state.submissionTrials++
             return true
         } else {
@@ -124,7 +124,7 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                         code: employee.code,
                         type: "bonus",
                         amount: calculateDeductionOrBonusPerMinute(timeDifference.clockOut + 24 * 60, employee.hourlyRate, "overtime"),
-                        comment: `spent ${timeDifference.clockOut + (24 * 60)} minutes in overtime`,
+                        comment: `spent ${timeDifference.clockOut + (24 * 60)} minutes in overtime in ${today}`,
                         month: monthParser(),
                         approved: false
                     })
@@ -135,13 +135,13 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                         return;
                     }
                     // Overnight, case: employee left earlier than they should and gets a deduction
-                    if (timeDifference.clockOut <= 0 && timeDifference.clockOut >= EMPLOYEE_DELAY_LIMIT) {
+                    if (timeDifference.clockOut <= 0 && Math.abs(timeDifference.clockOut) >= EMPLOYEE_DELAY_LIMIT) {
                         await db.bonuses.insertOne({
                             employee: employee.name,
                             code: employee.code,
                             type: "deduction",
                             amount: calculateDeductionOrBonusPerMinute(timeDifference.clockOut, employee.hourlyRate, "delay"),
-                            comment: `left earlier by ${timeDifference.clockOut * -1} minutes`,
+                            comment: `left earlier by ${timeDifference.clockOut * -1} minutes in ${today}`,
                             month: monthParser(),
                             approved: true
                         })
@@ -154,7 +154,7 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                             code: employee.code,
                             type: "bonus",
                             amount: calculateDeductionOrBonusPerMinute(timeDifference.clockOut, employee.hourlyRate, "overtime"),
-                            comment: `spent ${timeDifference.clockOut} minutes in overtime`,
+                            comment: `spent ${timeDifference.clockOut} minutes in overtime in ${today}`,
                             month: monthParser(),
                             approved: false
                         })
@@ -177,7 +177,7 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                         code: employee.code,
                         type: "deduction",
                         amount: calculateDeductionOrBonusPerMinute(timeDifference.clockIn, employee.hourlyRate, "delay"),
-                        comment: `late by ${timeDifference.clockIn} minutes`,
+                        comment: `late by ${timeDifference.clockIn} minutes in ${today}`,
                         month: monthParser(),
                         approved: true
                     })
@@ -185,13 +185,13 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
 
                 // Normal clockIn, Employee came early and an overtime bonus is automatically submitted awaiting
                 // approval
-                if (timeDifference.clockIn <= 0 && timeDifference.clockIn >= EMPLOYEE_OVERTIME_MINIMUM) {
+                if (timeDifference.clockIn <= 0 && Math.abs(timeDifference.clockIn) >= EMPLOYEE_OVERTIME_MINIMUM) {
                     await db.bonuses.insertOne({
                         employee: employee.name,
                         code: employee.code,
                         type: "bonus",
                         amount: calculateDeductionOrBonusPerMinute(timeDifference.clockIn, employee.hourlyRate, "overtime"),
-                        comment: `spent ${timeDifference.clockIn * -1} minutes in overtime`,
+                        comment: `spent ${timeDifference.clockIn * -1} minutes in overtime in ${today}`,
                         month: monthParser(),
                         approved: false
                     })
@@ -215,13 +215,13 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                 }
 
                 // Normal clockOut, employee left earlier and gets a deduction
-                if (timeDifference.clockOut <= 0 && timeDifference.clockOut >= EMPLOYEE_DELAY_LIMIT) {
+                if (timeDifference.clockOut <= 0 && Math.abs(timeDifference.clockOut) >= EMPLOYEE_DELAY_LIMIT) {
                     await db.bonuses.insertOne({
                         employee: employee.name,
                         code: employee.code,
                         type: "deduction",
                         amount: calculateDeductionOrBonusPerMinute(timeDifference.clockOut, employee.hourlyRate, "delay"),
-                        comment: `left earlier by ${timeDifference.clockOut} minutes`,
+                        comment: `left earlier by ${timeDifference.clockOut} minutes in ${today}`,
                         month: monthParser(),
                         approved: true
                     })
@@ -234,7 +234,7 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                         code: employee.code,
                         type: "bonus",
                         amount: calculateDeductionOrBonusPerMinute(timeDifference.clockOut, employee.hourlyRate, "overtime"),
-                        comment: `spent ${timeDifference.clockOut} minutes in overtime`,
+                        comment: `spent ${timeDifference.clockOut} minutes in overtime in ${today}`,
                         month: monthParser(),
                         approved: false
                     })
