@@ -1,10 +1,11 @@
 import express from "express";
 import {
-	createBonus,
-	deleteBonus,
-	getCreateBonusPage,
-	getHistoryPage,
-	getMainPage,
+    approveBonus,
+    createBonus,
+    deleteBonus,
+    getCreateBonusPage,
+    getHistoryPage,
+    getMainPage,
 } from "../controllers/bonuses";
 
 const Router = express.Router();
@@ -12,6 +13,7 @@ const Router = express.Router();
 Router.get("/", getMainPage);
 Router.get("/new", getCreateBonusPage);
 Router.post("/", createBonus);
+Router.put("/approve/:id", approveBonus)
 Router.delete("/:id", deleteBonus);
 Router.get("/history", getHistoryPage);
 

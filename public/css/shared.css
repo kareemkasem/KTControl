@@ -276,22 +276,19 @@ body {
 }
 
 .details {
-    justify-content: center;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
     width: calc(25% - 55px);
     border-radius: 20px;
     padding: 20px;
     background: var(--green-light);
     font-size: 1.25rem;
-    /*line-height: 10px;*/
     box-shadow: 2px 2px 2px rgb(0, 0, 0, 0.5);
     cursor: pointer;
-    /*white-space: nowrap;*/
-    /*white-space: break-spaces;*/
 }
 
 .details > * {
-    margin: 0 !important;
+    margin: 0;
 }
 
 .error {

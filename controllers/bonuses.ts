@@ -83,6 +83,17 @@ export async function createBonus(
     }
 }
 
+// PUT /bonuses/approve/:id
+export async function approveBonus(req: Request<{ id: string }>, res: Response) {
+    const id = req.params.id;
+    try {
+        await db.bonuses.updateOne({_id: new ObjectId(id)}, {$set: {approved: true}})
+        res.status(201).send({message: "success"})
+    } catch (error) {
+        res.status(500).send({error: (error as Error).message});
+    }
+}
+
 // DELETE /bonuses/:id
 export async function deleteBonus(req: Request<{ id: string }>, res: Response) {
     const id = req.params.id;

@@ -257,3 +257,9 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
 export function getAdminPage(req: Request, res: Response) {
     res.status(200).render("Attendance/admin.ejs")
 }
+
+// GET /attendance/overtime
+export async function getOvertimePage(req: Request, res: Response) {
+    const data = await db.bonuses.find({approved: false}).toArray()
+    res.status(200).render("Attendance/overtime.ejs", {data})
+}

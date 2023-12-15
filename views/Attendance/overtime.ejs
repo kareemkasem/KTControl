@@ -1,0 +1,31 @@
+<%- include('../shared/head'); %>
+<head>
+    <link rel="stylesheet" href="/css/shared.css"/>
+</head>
+<%- include('../shared/nav', {title: "Approve Overtime", link: "/attendance/admin"}) %>
+<main>
+    <% if(data.length === 0){ %>
+        <div style="display: flex; justify-content: center; font-size: 1.5rem">
+            <p>No entries found</p>
+        </div>
+    <% } else { %>
+    <div class="list">
+        <% data.forEach(i => { %>
+            <div class="details bonus">
+                <p><span class=" detail-title">Employee:</span> <%= i.employee %></p>
+                <p><span class="detail-title">Month:</span> <%= i.month %></p>
+                <p>
+                    <span class="detail-title">Amount:</span> <%= i.amount %>
+                </p>
+                <p><span class="detail-title">Comment:</span> <%= i.comment %></p>
+                <div class="entry-vertical" style="margin-top: auto">
+                    <button class="submit-button overtime-approve" data-id="<%= i._id %>">Approve</button>
+                    <button class="submit-button overtime-delete" data-id="<%= i._id %>">Delete</button>
+                </div>
+            </div>
+        <% }) %>
+        <% } %>
+    </div>
+</main>
+
+<script src="/js/overtime.js"></script>
