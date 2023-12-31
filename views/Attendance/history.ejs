@@ -1,0 +1,34 @@
+<%- include('../shared/head'); %>
+<head>
+    <link rel="stylesheet" href="/css/shared.css"/>
+</head>
+<%- include('../shared/nav', {title: "Attendance History", link: "/attendance/admin"}) %>
+<main class="form-container">
+    <div class="entry">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" value=<%= day %>>
+        <button id="search-btn" class="submit-button">Search</button>
+    </div>
+    <hr style="width: 100%; margin: 10px 0">
+    <h3 class="header"><%= new Date(day).toDateString() %></h3>
+    <% if(data.length === 0){ %>
+        <div style="display: flex; justify-content: center; font-size: 1.5rem">
+            <p>No entries found</p>
+        </div>
+    <% } else { %>
+    <div class="list">
+        <% data.forEach(i => { %>
+            <div class="details details-half">
+                <p><span class=" detail-title">Name:</span> <%= i.name %></p>
+                <p><span class=" detail-title">Code:</span> <%= i.code %></p>
+                <p><span class="detail-title">clocked in at:</span> <%= i.clockIn %></p>
+                <p>
+                    <span class="detail-title">clocked out at:</span> <%= i.clockOut %>
+                </p>
+            </div>
+        <% }) %>
+        <% } %>
+    </div>
+</main>
+
+<script src="/js/attendance.js"></script>

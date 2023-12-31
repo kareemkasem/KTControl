@@ -3,7 +3,7 @@ import {attendanceEntry, attendanceEntryFormInput, Employee} from "../types";
 import {db} from "../database";
 import bcrypt from "bcryptjs";
 import workHoursDiff from "../utils/workHoursDiff";
-import {monthParser} from "../utils/date-parser";
+import {parseDate, parseMonth, parseTime} from "../utils/date-parser";
 
 const MONTHLY_OFF_DAYS = 4 // to be overridden via admin configuration
 const MAX_TIME_DIFFERENCE = 120 // to be overridden via admin configuration
@@ -125,7 +125,7 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                         type: "bonus",
                         amount: calculateDeductionOrBonusPerMinute(timeDifference.clockOut + 24 * 60, employee.hourlyRate, "overtime"),
                         comment: `spent ${timeDifference.clockOut + (24 * 60)} minutes in overtime in ${today}`,
-                        month: monthParser(),
+                        month: parseMonth(),
                         approved: false
                     })
                 } else {
@@ -142,7 +142,7 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                             type: "deduction",
                             amount: calculateDeductionOrBonusPerMinute(timeDifference.clockOut, employee.hourlyRate, "delay"),
                             comment: `left earlier by ${timeDifference.clockOut * -1} minutes in ${today}`,
-                            month: monthParser(),
+                            month: parseMonth(),
                             approved: true
                         })
                     }
@@ -155,7 +155,7 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                             type: "bonus",
                             amount: calculateDeductionOrBonusPerMinute(timeDifference.clockOut, employee.hourlyRate, "overtime"),
                             comment: `spent ${timeDifference.clockOut} minutes in overtime in ${today}`,
-                            month: monthParser(),
+                            month: parseMonth(),
                             approved: false
                         })
                     }
@@ -178,7 +178,7 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                         type: "deduction",
                         amount: calculateDeductionOrBonusPerMinute(timeDifference.clockIn, employee.hourlyRate, "delay"),
                         comment: `late by ${timeDifference.clockIn} minutes in ${today}`,
-                        month: monthParser(),
+                        month: parseMonth(),
                         approved: true
                     })
                 }
@@ -192,7 +192,7 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                         type: "bonus",
                         amount: calculateDeductionOrBonusPerMinute(timeDifference.clockIn, employee.hourlyRate, "overtime"),
                         comment: `spent ${timeDifference.clockIn * -1} minutes in overtime in ${today}`,
-                        month: monthParser(),
+                        month: parseMonth(),
                         approved: false
                     })
                 }
@@ -222,7 +222,7 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                         type: "deduction",
                         amount: calculateDeductionOrBonusPerMinute(timeDifference.clockOut, employee.hourlyRate, "delay"),
                         comment: `left earlier by ${timeDifference.clockOut} minutes in ${today}`,
-                        month: monthParser(),
+                        month: parseMonth(),
                         approved: true
                     })
                 }
@@ -235,7 +235,7 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
                         type: "bonus",
                         amount: calculateDeductionOrBonusPerMinute(timeDifference.clockOut, employee.hourlyRate, "overtime"),
                         comment: `spent ${timeDifference.clockOut} minutes in overtime in ${today}`,
-                        month: monthParser(),
+                        month: parseMonth(),
                         approved: false
                     })
                 }
@@ -262,4 +262,49 @@ export function getAdminPage(req: Request, res: Response) {
 export async function getOvertimePage(req: Request, res: Response) {
     const data = await db.bonuses.find({approved: false}).toArray()
     res.status(200).render("Attendance/overtime.ejs", {data})
+}
+
+// GET /attendance/history
+export async function getHistoryPage(req: Request<{}, {}, {}, { day?: string }>, res: Response) {
+    const day = req.query.day ? new Date(req.query.day).toDateString() : new Date().toDateString()
+
+    try {
+        let data = await db.attendance.aggregate([
+            {
+                $match: {day},
+            },
+            {
+                $lookup:
+                    {
+                        from: "employees",
+                        localField: "employee",
+                        foreignField: "code",
+                        as: "name",
+                    },
+            },
+            {
+                $project:
+                    {
+                        _id: 1,
+                        clockIn: 1,
+                        clockOut: 1,
+                        name: {
+                            $first: "$name.name",
+                        },
+                        code: "$employee"
+                    },
+            },
+        ]).toArray()
+
+        data = data.map(entry => {
+            return {
+                ...entry,
+                clockIn: parseTime(entry.clockIn),
+                clockOut: parseTime(entry.clockOut)
+            }
+        })
+        res.status(200).render("Attendance/history", {data, day: parseDate(new Date(day))})
+    } catch (error) {
+        res.status(500).send({error: (error as Error).message});
+    }
 }

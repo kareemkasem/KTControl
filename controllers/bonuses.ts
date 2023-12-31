@@ -2,12 +2,12 @@ import {Request, Response} from "express";
 import {Bonus, BonusFormInput, Employee} from "../types";
 import {BonusSchema} from "../models/Bonus";
 import {db} from "../database";
-import {monthParser} from "../utils/date-parser";
+import {parseMonth} from "../utils/date-parser";
 import {ObjectId} from "mongodb";
 
 // GET /bonuses
 export async function getMainPage(req: Request, res: Response) {
-    const currentMonth = monthParser();
+    const currentMonth = parseMonth();
     try {
         const data = await db.bonuses
             .find({month: currentMonth})
@@ -60,7 +60,7 @@ export async function createBonus(
     let bonus: Bonus = {
         ...req.body,
         amount: +req.body.amount,
-        month: monthParser(),
+        month: parseMonth(),
         code: employee!.code,
     };
 

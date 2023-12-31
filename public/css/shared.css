@@ -11,7 +11,7 @@
     --red-dark: #dc3545;
 }
 
-body {
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -287,6 +287,15 @@ body {
     cursor: pointer;
 }
 
+.details-half {
+    width: calc(50% - 10px) /*to calculate .list gaps*/
+}
+
+.details-full {
+    width: 98%;
+    margin: 0 2%
+}
+
 .details > * {
     margin: 0;
 }
@@ -398,4 +407,14 @@ body {
 .radio-container button {
     width: 25% !important;
     margin: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    color: white;
+    background-color: var(--blue-dark);
+    padding: 5px 0;
+    border-radius: 5px;
+    margin: 0 15px
 }

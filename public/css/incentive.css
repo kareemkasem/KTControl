@@ -44,22 +44,14 @@
     cursor: pointer;
 }
 
-.incentive-details-employee{
+.incentive-details-employee {
     line-height: 1rem;
 }
 
-.incentive-details-header{
-    display: flex;
-    justify-content: center;
-    color: white;
-    background-color: var(--blue-dark);
-    padding: 5px 0;
-}
-
-.incentive-details-item{
+.incentive-details-item {
     margin: 15px
 }
 
-.incentive-details-item:hover{
+.incentive-details-item:hover {
     cursor: default;
 }
