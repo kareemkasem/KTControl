@@ -1,7 +1,7 @@
 import JOI from "joi";
-import {attendanceEntry} from "../types";
+import {AttendanceEntry} from "../types";
 
-export const attendanceEntrySchema = JOI.object<attendanceEntry>({
+export const attendanceEntrySchema = JOI.object<AttendanceEntry>({
     employee: JOI.number().required(),
     day: JOI.string().required(),
     clockIn: JOI.date().required(),

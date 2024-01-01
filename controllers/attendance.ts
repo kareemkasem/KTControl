@@ -1,9 +1,10 @@
 import {Request, Response} from "express"
-import {attendanceEntry, attendanceEntryFormInput, Employee} from "../types";
+import {AttendanceEntry, AttendanceEntryFormInput, DayOffFormInput, Employee} from "../types";
 import {db} from "../database";
 import bcrypt from "bcryptjs";
 import workHoursDiff from "../utils/workHoursDiff";
 import {parseDate, parseMonth, parseTime} from "../utils/date-parser";
+import {DayOffSchema} from "../models/dayOff";
 
 const MONTHLY_OFF_DAYS = 4 // to be overridden via admin configuration
 const MAX_TIME_DIFFERENCE = 120 // to be overridden via admin configuration
@@ -61,7 +62,7 @@ export function getEmployeesPage(req: Request, res: Response) {
 }
 
 // POST /attendance/employees
-export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntryFormInput>, res: Response) {
+export async function takeEmployeeAttendance(req: Request<{}, {}, AttendanceEntryFormInput>, res: Response) {
     const employeeCode = parseInt(req.body.employee)
     const password = req.body.password
 
@@ -104,11 +105,11 @@ export async function takeEmployeeAttendance(req: Request<{}, {}, attendanceEntr
             clockOut: workHoursDiff(employee.workHours.clockOut)
         }
 
-        const existingEntryForToday = await db.attendance.findOne<attendanceEntry>({employee: employeeCode, day: today})
+        const existingEntryForToday = await db.attendance.findOne<AttendanceEntry>({employee: employeeCode, day: today})
 
         if (!existingEntryForToday) {
             // check for overnight shifts
-            const existingEntryForYesterday = await db.attendance.findOne<attendanceEntry>({
+            const existingEntryForYesterday = await db.attendance.findOne<AttendanceEntry>({
                 employee: employeeCode,
                 day: yesterday
             })
@@ -304,6 +305,43 @@ export async function getHistoryPage(req: Request<{}, {}, {}, { day?: string }>,
             }
         })
         res.status(200).render("Attendance/history", {data, day: parseDate(new Date(day))})
+    } catch (error) {
+        res.status(500).send({error: (error as Error).message});
+    }
+}
+
+// GET /attendance/dayoff
+export async function getDayOffPage(req: Request, res: Response) {
+    const employees = await db.employees.find({}).project({name: 1, code: 1}).toArray()
+    const date = parseDate();
+    res.status(200).render("Attendance/dayOff", {employees, date})
+}
+
+// POST /attendance/dayoff
+export async function postDayOff(req: Request<{}, {}, DayOffFormInput>, res: Response) {
+    const dayOffFormInput = {
+        employee: +req.body.employee,
+        date: new Date(req.body.date),
+        comment: req.body.comment
+    }
+
+    const {value, error} = DayOffSchema.validate(dayOffFormInput)
+
+    if (error) {
+        res.status(400).send({error: error})
+        return;
+    }
+
+    const dayOff = value
+
+    try {
+        const employee = await db.employees.findOne({code: dayOff.employee})
+        if (!employee) {
+            res.status(404).send({error: "Employee not found"})
+            return;
+        }
+        await db.dayOff.insertOne(dayOff)
+        res.status(201).redirect("/attendance/dayoff")
     } catch (error) {
         res.status(500).send({error: (error as Error).message});
     }

@@ -1,0 +1,36 @@
+<%- include('../shared/head'); %>
+<head>
+    <link rel="stylesheet" href="/css/shared.css"/>
+</head>
+<%- include('../shared/nav', {title: "Day off", link: "/attendance/admin"}) %>
+<main>
+    <form class="form-container" method="post" action="/attendance/dayoff" autocomplete="off">
+        <% if(!employees){ %>
+            <div style="display: flex; justify-content: center; font-size: 1.5rem">
+                <p>No entries found</p>
+            </div>
+        <% } else { %>
+            <div class="entry radio-select" id="employee-filter">
+                <label for="employee">Employee</label>
+                <select id="employee" name="employee">
+                    <% employees.forEach(employee=> { %>
+                        <option value="<%= employee.code %>"><%= employee.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="entry">
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" value="<%= date %>"/>
+            </div>
+            <div class="entry">
+                <label for="comment">Comment</label>
+                <input type="text" id="comment" name="comment" placeholder="comment">
+            </div>
+            <div class="entry">
+                <input type="submit" class="submit-button" value="Save">
+                <small>Please, make sure the info is correct. you can <b>NOT</b> undo
+                    this.</small>
+            </div>
+        <% } %>
+    </form>
+</main>

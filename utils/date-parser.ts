@@ -1,4 +1,4 @@
-export function parseDate(date: Date): string {
+export function parseDate(date: Date = new Date()): string {
     let year = date.getFullYear().toString();
     let month = (date.getMonth() + 1).toString();
     let day = date.getDate().toString();

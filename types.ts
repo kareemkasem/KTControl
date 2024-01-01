@@ -86,14 +86,26 @@ export type BonusFormInput = {
     employee: string;
 };
 
-export type attendanceEntry = {
+export type AttendanceEntry = {
     employee: number,
     day: string, //date string
     clockIn: Date,
     clockOut?: Date
 }
 
-export type attendanceEntryFormInput = {
+export type AttendanceEntryFormInput = {
     employee: string,
     password: string,
+}
+
+export type DayOff = {
+    employee: number,
+    date: Date,
+    comment?: string,
+}
+
+export type DayOffFormInput = {
+    employee: string,
+    date: string,
+    comment?: string,
 }

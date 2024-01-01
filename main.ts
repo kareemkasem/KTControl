@@ -18,7 +18,8 @@ server.use(
             directives: {
                 ...helmet.contentSecurityPolicy.getDefaultDirectives(),
                 "img-src": ["'self'", "media2.giphy.com"],
-                // here I only included websites in which I do NOT want to enforce the CSP which forbids loading resources from outside sources
+                // here I only included websites which I do NOT want to enforce the CSP which forbids loading
+                // from outside sources
             },
         },
     })

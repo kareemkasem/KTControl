@@ -1,5 +1,5 @@
 import {MongoClient} from "mongodb";
-import {attendanceEntry, Bonus, Employee, IncentiveEntry, IncentiveItem} from "./types";
+import {AttendanceEntry, Bonus, DayOff, Employee, IncentiveEntry, IncentiveItem} from "./types";
 
 if (!process.env.MONGO_URI) {
     throw new Error("mongo uri not defined");
@@ -22,5 +22,6 @@ export const db = {
     incentive: database.collection<IncentiveEntry>("incentive"),
     incentiveItems: database.collection<IncentiveItem>("incentive_items"),
     bonuses: database.collection<Bonus>("bonus"),
-    attendance: database.collection<attendanceEntry>("attendance")
+    attendance: database.collection<AttendanceEntry>("attendance"),
+    dayOff: database.collection<DayOff>("day_off")
 } as const;
