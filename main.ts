@@ -12,6 +12,7 @@ import payrollRoutes from "./routes/Payroll";
 
 // config
 dotenv.config();
+
 const server = express();
 server.use(
 	helmet({
