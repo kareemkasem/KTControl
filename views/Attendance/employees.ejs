@@ -1,22 +1,32 @@
-<%- include('../shared/head'); %>
+<!-- <%- include('../shared/head'); %>
 <head>
-    <link rel="stylesheet" href="/css/shared.css"/>
+	<link rel="stylesheet" href="/css/shared.css" />
 </head>
 <main class="main-page">
-    <h1 class="logo">Attendance</h1>
-    <form class="form-container" method="post" action="/attendance/employees">
-        <% if(error){ %>
-            <div class="error-message">
-                <p><%= error %></p>
-            </div>
-        <% } %>
-        <div class="entry">
-            <input name="employee" id="employee" type="number" placeholder="Please Enter Your Code">
-        </div>
-        <div class="entry">
-            <input name="password" id="password" type="password" placeholder="Please Enter Your Password">
-        </div>
-        <input type="submit" value="Register" class="submit-button"/>
-    </form>
-    <a class="hover-tooltip" href="/">Are you the admin ?</a>
-</main>
+	<h1 class="logo">Attendance</h1>
+	<form class="form-container" method="post" action="/attendance/employees">
+		<% if(error){ %>
+		<div class="error-message">
+			<p><%= error %></p>
+		</div>
+		<% } %>
+		<div class="entry">
+			<input
+				name="employee"
+				id="employee"
+				type="number"
+				placeholder="Please Enter Your Code"
+			/>
+		</div>
+		<div class="entry">
+			<input
+				name="password"
+				id="password"
+				type="password"
+				placeholder="Please Enter Your Password"
+			/>
+		</div>
+		<input type="submit" value="Register" class="submit-button" />
+	</form>
+	<a class="hover-tooltip" href="/">Are you the admin ?</a>
+</main> -->
