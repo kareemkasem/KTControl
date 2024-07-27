@@ -94,16 +94,18 @@ export type BonusFormInput = {
 	employee: string;
 };
 
+export type AttendanceMonth = {
+	month: string;
+	entries: AttendanceEntry[];
+	status: "current" | "complete";
+};
+
 export type AttendanceEntry = {
 	employee: number;
 	day: string; //date string
-	clockIn: Date;
-	clockOut?: Date;
-};
-
-export type AttendanceEntryFormInput = {
-	employee: string;
-	password: string;
+	clockIn: Date | "pending";
+	clockOut: Date | "pending";
+	totalHours: number;
 };
 
 export type DayOff = {

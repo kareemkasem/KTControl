@@ -1,0 +1,28 @@
+<%- include('../shared/head'); %>
+<head>
+	<link rel="stylesheet" href="/css/shared.css" />
+</head>
+<body>
+	<%- include('../shared/nav', {title: "Generate New Month", link:
+	"/Attendance"}) %>
+	<form class="form-container" method="post" action=attendance/generate-new"">
+		<div class="incentive-details-employee">
+			<h1 class="detail-title">Generate New Month:</h1>
+			<p>
+				<span class="detail-title">Current Month:</span> <%= currentMonthString
+				%>
+			</p>
+			<p><span class="detail-title">Status:</span> <%= status %></p>
+            <%if (status === "none"){ %>
+			<button class="submit-button" id="generate-new-month" 
+            >
+				Generate New Month
+			</button>
+            <% } else { %>
+                <div class="error-message">
+                    <p>can't generate an existing month</p>
+                </div>
+            <%}%>
+		</div>
+	</for>
+</body>
