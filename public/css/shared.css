@@ -421,3 +421,29 @@ body{
     border-radius: 5px;
     margin: 0 15px
 }
+
+.table{
+    margin: 5vh 10vw;
+    font-size: 2rem;
+}
+
+.table-cell{
+    text-align: center;
+    width: 20vw;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.table-cell-highlighted{
+    background-color: var(--blue-dark);
+    color: var(--blue-light);
+    text-align: center;
+    width: 20vw;
+}
+
+.table-cell-input{
+    text-align: center;
+    width: 20vw;
+    border: none;
+    font-size: 2rem;
+}

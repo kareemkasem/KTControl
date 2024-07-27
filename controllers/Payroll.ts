@@ -2,12 +2,7 @@ import { Request, Response } from "express";
 import { db } from "../database";
 import workHoursDiff from "../utils/workHoursDiff";
 import { parseMonth } from "../utils/date-parser";
-import {
-	Bonus,
-	DayOff,
-	IncentiveEntryForPayroll,
-	SalaryCalculations,
-} from "../types";
+import { Bonus, IncentiveEntryForPayroll, SalaryCalculations } from "../types";
 
 const MONTHLY_OFF_DAYS = 4; // to be overridden via admin configuration
 const UNAUTHORIZED_ABSENCE_PENALTY = 1; // to be overridden via admin configuration
@@ -37,7 +32,6 @@ export async function calculateSalary(
 		let incentive: number;
 		let totalHours: number;
 
-		let authorizedAbsenceDaysList: DayOff[];
 		let bonusList: Bonus[];
 		let deductionList: Bonus[];
 		let incentiveList: IncentiveEntryForPayroll[];
@@ -82,18 +76,6 @@ export async function calculateSalary(
 		mainSalary =
 			(workDaysCount * workHours * hourlyRate) /
 			(daysInThisMonth - MONTHLY_OFF_DAYS);
-
-		// * Calculating Absence penalty
-		authorizedAbsenceDaysList = await db.dayOff
-			.find({ employee: employee.code, month })
-			.toArray();
-		const unauthorizedAbsenceDaysCount =
-			//! today.getDate()
-			daysInThisMonth - authorizedAbsenceDaysList.length - workDaysCount;
-		unauthorizedAbsence =
-			((unauthorizedAbsenceDaysCount * workHours * hourlyRate) /
-				daysInThisMonth) *
-			UNAUTHORIZED_ABSENCE_PENALTY;
 
 		// * Calculating Bonuses
 		bonusList = await db.bonuses
@@ -160,16 +142,12 @@ export async function calculateSalary(
 				mainSalary,
 				bonuses,
 				deductions,
-				unauthorizedAbsence,
 				incentive,
 			},
-			total: Math.round(
-				mainSalary + bonuses - deductions - unauthorizedAbsence + incentive
-			),
+			total: Math.round(mainSalary + bonuses - deductions + incentive),
 			details: {
 				totalHours,
 				workDaysCount,
-				authorizedAbsenceDaysList,
 				bonusList,
 				deductionList,
 				incentiveList,

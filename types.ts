@@ -101,7 +101,7 @@ export type AttendanceMonth = {
 };
 
 export type AttendanceEntry = {
-	employee: number;
+	employee: string;
 	clockIn: string;
 	clockOut: string;
 	totalHours: number;
@@ -111,18 +111,7 @@ export type AttendanceEntry = {
 export type SingleAttendanceEntry = {
 	clockIn: Date | "pending";
 	clockOut: Date | "pending";
-};
-
-export type DayOff = {
-	employee: number;
-	date: Date;
-	comment?: string;
-};
-
-export type DayOffFormInput = {
-	employee: string;
-	date: string;
-	comment?: string;
+	total: number;
 };
 
 export type SalaryCalculations = {
@@ -130,14 +119,12 @@ export type SalaryCalculations = {
 		mainSalary: number;
 		bonuses: number;
 		deductions: number;
-		unauthorizedAbsence: number;
 		incentive: number;
 	};
 	total: number;
 	details: {
 		workDaysCount: number;
 		totalHours: number;
-		authorizedAbsenceDaysList: DayOff[];
 		bonusList: Bonus[];
 		deductionList: Bonus[];
 		incentiveList: IncentiveEntryForPayroll[];

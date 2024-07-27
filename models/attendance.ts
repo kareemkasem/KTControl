@@ -12,7 +12,7 @@ export const attendanceEntrySchema = JOI.object<AttendanceMonth>({
 	entries: JOI.array()
 		.items(
 			JOI.object<AttendanceEntry>({
-				employee: JOI.number().min(1).max(10000).required(),
+				employee: JOI.string().required,
 				clockIn: JOI.string().required,
 				clockOut: JOI.string().required,
 				totalHours: JOI.number().default(0),

@@ -4,7 +4,6 @@ import {
 	AttendanceEntry,
 	AttendanceMonth,
 	Bonus,
-	DayOff,
 	Employee,
 	IncentiveEntry,
 	IncentiveItem,
@@ -34,5 +33,4 @@ export const db = {
 	incentiveItems: database.collection<IncentiveItem>("incentive_items"),
 	bonuses: database.collection<Bonus>("bonus"),
 	attendance: database.collection<AttendanceMonth>("attendance"),
-	dayOff: database.collection<DayOff>("day_off"),
 } as const;

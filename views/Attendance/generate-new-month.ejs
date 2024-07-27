@@ -13,16 +13,15 @@
 				%>
 			</p>
 			<p><span class="detail-title">Status:</span> <%= status %></p>
-            <%if (status === "none"){ %>
-			<button class="submit-button" id="generate-new-month" 
-            >
+			<%if (status === "none"){ %>
+			<button class="submit-button" id="generate-new-month">
 				Generate New Month
 			</button>
-            <% } else { %>
-                <div class="error-message">
-                    <p>can't generate an existing month</p>
-                </div>
-            <%}%>
+			<% } else { %>
+			<div class="error-message">
+				<p>can't generate an existing month</p>
+			</div>
+			<%}%>
 		</div>
-	</for>
+	</form>
 </body>

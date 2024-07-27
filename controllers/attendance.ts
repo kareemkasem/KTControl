@@ -3,6 +3,14 @@ import { db } from "../database";
 import { WithId } from "mongodb";
 import { AttendanceMonth, Employee } from "../types";
 
+const CURRENT_MONTH_STRING =
+	new Date().getMonth() + 1 + "/" + new Date().getFullYear();
+
+const DAYS_IN_CURRENT_MONTH = new Date(
+	new Date().getMonth() + 1,
+	new Date().getFullYear()
+).getUTCDate();
+
 // GET /attendance
 export function getMainPage(req: Request, res: Response) {
 	res.status(200).render("Attendance/index.ejs");
@@ -10,50 +18,47 @@ export function getMainPage(req: Request, res: Response) {
 
 // GET /generate-new
 export async function getGenerateNewMonth(req: Request, res: Response) {
-	const currentMonthString =
-		new Date().getMonth() + 1 + "/" + new Date().getFullYear();
-
 	let status = "none";
 	const monthInDatabase = await db.attendance.findOne<WithId<AttendanceMonth>>({
-		month: currentMonthString,
+		month: CURRENT_MONTH_STRING,
 	});
 	if (monthInDatabase) {
 		status = monthInDatabase.status;
 	}
 	res.status(200).render("Attendance/generate-new-month.ejs", {
-		currentMonthString: currentMonthString,
+		currentMonthString: CURRENT_MONTH_STRING,
 		status: status,
 	});
 }
 
 // POST /generate-new
 export async function generateNewMonth(req: Request, res: Response) {
-	const currentMonthString =
-		new Date().getMonth() + 1 + "/" + new Date().getFullYear();
-	const daysInCurrentMOnth = new Date(
-		new Date().getMonth() + 1,
-		new Date().getFullYear()
-	).getUTCDate();
-
 	const employees = await db.employees.find<WithId<Employee>>({}).toArray();
 
 	const newMonthDate: AttendanceMonth = {
-		month: currentMonthString,
+		month: CURRENT_MONTH_STRING,
 		status: "current",
 		entries: employees.map((employee) => ({
-			employee: employee.code,
+			employee: employee.name,
 			totalHours: 0,
 			clockIn: employee.workHours.clockIn,
 			clockOut: employee.workHours.clockOut,
-			entries: new Array(daysInCurrentMOnth).fill({
+			entries: new Array(DAYS_IN_CURRENT_MONTH).fill({
 				clockIn: "pending",
 				clockOut: "pending",
+				total: 0,
 			}),
 		})),
 	};
 
 	await db.attendance.insertOne(newMonthDate);
 
-	// ! make it redirect to the newly created current month
-	res.redirect("/attendance");
+	res.redirect("/attendance/current-month");
+}
+
+// GET /attendance/current-month
+export async function getCurrentMonth(req: Request, res: Response) {
+	const data = await db.attendance.findOne({ month: CURRENT_MONTH_STRING });
+	console.log(data);
+	res.status(200).render("Attendance/current-month.ejs", { data });
 }
