@@ -1,5 +1,9 @@
 import JOI from "joi";
-import { AttendanceEntry, AttendanceMonth } from "../types";
+import {
+	AttendanceEntry,
+	AttendanceMonth,
+	SingleAttendanceEntry,
+} from "../types";
 
 export const attendanceEntrySchema = JOI.object<AttendanceMonth>({
 	month: JOI.string()
@@ -9,10 +13,15 @@ export const attendanceEntrySchema = JOI.object<AttendanceMonth>({
 		.items(
 			JOI.object<AttendanceEntry>({
 				employee: JOI.number().min(1).max(10000).required(),
-				day: JOI.string().required(),
-				clockIn: JOI.date().allow("pending").default("pending"),
-				clockOut: JOI.date().allow("pending").default("pending"),
+				clockIn: JOI.string().required,
+				clockOut: JOI.string().required,
 				totalHours: JOI.number().default(0),
+				entries: JOI.array().items(
+					JOI.object<SingleAttendanceEntry>({
+						clockIn: JOI.date().allow("pending").default("pending"),
+						clockOut: JOI.date().allow("pending").default("pending"),
+					})
+				),
 			})
 		)
 		.required(),

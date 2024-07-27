@@ -102,10 +102,15 @@ export type AttendanceMonth = {
 
 export type AttendanceEntry = {
 	employee: number;
-	day: string; //date string
+	clockIn: string;
+	clockOut: string;
+	totalHours: number;
+	entries: SingleAttendanceEntry[];
+};
+
+export type SingleAttendanceEntry = {
 	clockIn: Date | "pending";
 	clockOut: Date | "pending";
-	totalHours: number;
 };
 
 export type DayOff = {
