@@ -36,5 +36,5 @@ db.runCommand({
 ```
 2. run this command to give it a unique name
 ```ts
-    db.incentive-items.createIndex({name: 1},{unique: true})
+    db.incentive_items.createIndex({name: 1},{unique: true})
 ```

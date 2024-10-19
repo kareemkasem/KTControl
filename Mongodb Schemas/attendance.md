@@ -7,33 +7,8 @@ db.runCommand({
     collMod: "attendance",
     validator: {
         $jsonSchema: {
-            bsonType: "object",
-            required: ["employee", "day", "clockIn"],
-            properties: {
-                employee: {
-                    bsonType: "number",
-                    description: "must be a number and is required"
-                },
-                day: {
-                    bsonType: "string",
-                    description: "must be a string and is required"
-                },
-                clockIn: {
-                    bsonType: "date",
-                    description: "must be a date and is required"
-                },
-                clockOut: {
-                    bsonType: "date",
-                    description: "must be a date"
-                },
-            }
+
         }
     }
 })
-```
-
-2. run this command in the terminal to make sure there is one entry for each day per employee:
-
-```javascript
-db.attendance.createIndex({employee: 1, day: 1}, {uniqe: true})
 ```
