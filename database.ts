@@ -2,7 +2,6 @@ import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 import {
 	AttendanceEntry,
-	AttendanceMonth,
 	Bonus,
 	Employee,
 	IncentiveEntry,
@@ -32,5 +31,5 @@ export const db = {
 	incentive: database.collection<IncentiveEntry>("incentive"),
 	incentiveItems: database.collection<IncentiveItem>("incentive_items"),
 	bonuses: database.collection<Bonus>("bonus"),
-	attendance: database.collection<AttendanceMonth>("attendance"),
+	attendance: database.collection<AttendanceEntry>("attendance"),
 } as const;

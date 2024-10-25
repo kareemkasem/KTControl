@@ -94,25 +94,13 @@ export type BonusFormInput = {
 	employee: string;
 };
 
-// export type AttendanceMonth = {
-// 	month: string;
-// 	entries: AttendanceEntry[];
-// 	status: "current" | "complete";
-// };
-
-// export type AttendanceEntry = {
-// 	employee: string;
-// 	clockIn: string;
-// 	clockOut: string;
-// 	totalHours: number;
-// 	entries: SingleAttendanceEntry[];
-// };
-
-// export type SingleAttendanceEntry = {
-// 	clockIn: Date | "pending";
-// 	clockOut: Date | "pending";
-// 	total: number;
-// };
+export type AttendanceEntry = {
+	employee: number;
+	date: Date;
+	month: string;
+	clockIn: string;
+	clockOut: string;
+};
 
 export type SalaryCalculations = {
 	individualCalculations: {

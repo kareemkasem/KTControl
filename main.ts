@@ -5,7 +5,6 @@ import { connectToDatabase } from "./database";
 
 // Route Imports
 import employeeRoutes from "./routes/Employee";
-import attendanceRoutes from "./routes/attendance";
 import incentiveRoutes from "./routes/Incentive";
 import bonusesRoutes from "./routes/bonuses";
 import payrollRoutes from "./routes/Payroll";
@@ -36,7 +35,6 @@ server.get("/", (req: Request, res: Response) => {
 	res.render("index.ejs");
 });
 server.use("/employee", employeeRoutes);
-server.use("/attendance", attendanceRoutes);
 server.use("/incentive", incentiveRoutes);
 server.use("/bonuses", bonusesRoutes);
 server.use("/payroll", payrollRoutes);
