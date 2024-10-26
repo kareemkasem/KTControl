@@ -108,3 +108,22 @@ export async function updateIncentiveItem(
 		res.status(500).send({ message: (error as Error).message });
 	}
 }
+
+// DELETE /incentive/items/:id
+export async function deleteIncentiveItem(req: Request<{id: string}>, res: Response<{message: string}>){
+``
+	const id =  req.params.id
+	console.log(req)
+	try {
+		const { deletedCount } = await db.incentiveItems.deleteOne({
+			_id: new ObjectId(id),
+		});
+		if (deletedCount !== 1) {
+			res.status(404).send({ message: "item not found" });
+			return;
+		}
+		res.status(200).send({ message: "deletion succeeded" });
+	} catch (e) {
+		res.status(400).send({ message: (e as Error).message });
+	}
+}

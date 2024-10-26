@@ -12,6 +12,7 @@ import {
 } from "../controllers/incentive";
 import {
 	createIncentiveItem,
+	deleteIncentiveItem,
 	getAllIncentiveItems,
 	getCreateIncentiveItem,
 	getUpdateIncentiveItem,
@@ -34,6 +35,7 @@ Router.get("/items/create-item", getCreateIncentiveItem);
 Router.post("/items", createIncentiveItem);
 Router.get("/items/:id", getUpdateIncentiveItem);
 Router.post("/items/:id", updateIncentiveItem);
+Router.delete("/items/:id", deleteIncentiveItem)
 
 Router.get("/total", getTotalIncentivePage);
 Router.get("/total/data", getTotalIncentiveValue);

@@ -9,6 +9,7 @@ const submitButton = document.querySelector("#submit-button");
 const employee = document.querySelector("#employee");
 const month = document.querySelector("#month");
 
+
 detailsPageLoadingButton.addEventListener("click", async (e) => {
 	const response = await fetch(
 		window.origin +

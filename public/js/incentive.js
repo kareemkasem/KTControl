@@ -6,6 +6,7 @@ const month = document.querySelector("#months");
 const employee = document.querySelector("#employees");
 const calculateTotalButton = document.querySelector("#calculate-total-button");
 const calculationOutputField = document.querySelector("#output");
+const deleteItemBtn = document.querySelector("#delete-item-btn");
 
 if (incentiveItemList)
 	incentiveItemList.addEventListener("click", (event) => {
@@ -33,3 +34,10 @@ if (calculateTotalButton) {
 		calculationOutputField.value = total;
 	});
 }
+
+deleteItemBtn.addEventListener("click", (e) => {
+	e.preventDefault();
+	fetch(window.location.href,{method: "DELETE"})
+		.then(()=> {	window.location.href = `${window.location.origin}/Incentive/items`;})
+		.catch(e => console.log(e));
+})

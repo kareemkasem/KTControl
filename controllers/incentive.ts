@@ -294,12 +294,15 @@ export async function createOrUpdateIncentiveEntry(
 	req: Request<{}, {}, IncentiveEntryFormInput>,
 	res: Response
 ) {
+	const items = [req.body.items].flat();
+	const quantities = [req.body.quantities].flat();
+
 	let incentiveEntry: IncentiveEntry = {
 		month: parseMonth(),
 		employee: parseInt(req.body.employee),
-		details: req.body.items.map((item, index) => ({
+		details: items.map((item, index) => ({
 			item: new ObjectId(item),
-			quantity: parseInt(req.body.quantities[index]),
+			quantity: parseInt(quantities[index]),
 		})),
 	};
 
