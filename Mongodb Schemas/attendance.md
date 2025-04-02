@@ -8,7 +8,7 @@ db.runCommand({
     validator: {
         $jsonSchema: {
             bsonType: "object",
-            required: ["employee", "date", "month", "clockIn", "clockOut"],
+            required: ["employee", "log", "month"],
             properties: {
                 employee: {
                     bsonType: "number",

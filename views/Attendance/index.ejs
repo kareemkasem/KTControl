@@ -4,14 +4,32 @@
 </head>
 <body>
 <%- include('../shared/nav', {title: "Attendance", link: "/"}) %>
-<div style="margin: 50px">
-    <b>to do list</b>
-    <ol>
-        <li>make an employee drop down by code</li>
-        <li>make a result containing name / hours / rate</li>
-        <li>fetch/create table for current month</li>
-        <li>create submit functionality</li>
-        <li>create a history function</li>
-    </ol>
-</div>
+<main>
+    <form
+            action="/attendance"
+            method="post"
+            autocomplete="off"
+            class="form-container"
+    >
+        <div class="entry">
+            <label for="employee">Employee: </label>
+            <select type="text" name="employee">
+                <option value="all">all</option>
+                <% employees.forEach(employee =>{ %>
+                    <option value="<%= employee %>"><%= employee %></option>
+                <% }) %>
+            </select>
+        </div>
+        <div class="entry">
+            <label for="month">Month: </label>
+            <select type="text" name="month">
+                <option value="all">all</option>
+                <% months.forEach(month =>{ %>
+                    <option value="<%= month %>"><%= month %></option>
+                <% }) %>
+            </select>
+        </div>
+        <input type="submit" value="View" class="submit-button"/>
+    </form>
+</main>
 </body>
