@@ -5,31 +5,37 @@
 <body>
 <%- include('../shared/nav', {title: "Attendance", link: "/"}) %>
 <main>
-    <form
-            action="/attendance"
-            method="post"
-            autocomplete="off"
-            class="form-container"
-    >
-        <div class="entry">
-            <label for="employee">Employee: </label>
-            <select type="text" name="employee">
-                <option value="all">all</option>
-                <% employees.forEach(employee =>{ %>
-                    <option value="<%= employee %>"><%= employee %></option>
-                <% }) %>
-            </select>
+    <% if(employees && months){ %>
+        <form
+                action="/attendance"
+                method="post"
+                autocomplete="off"
+                class="form-container"
+        >
+            <div class="entry">
+                <label for="employee">Employee: </label>
+                <select type="text" name="employee">
+                    <option value="all">all</option>
+                    <% employees.forEach(employee =>{ %>
+                        <option value="<%= employee %>"><%= employee %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="entry">
+                <label for="month">Month: </label>
+                <select type="text" name="month">
+                    <option value="all">all</option>
+                    <% months.forEach(month =>{ %>
+                        <option value="<%= month %>"><%= month %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <input type="submit" value="View" class="submit-button"/>
+        </form>
+    <% } else { %>
+        <div>
+            insufficient database entries
         </div>
-        <div class="entry">
-            <label for="month">Month: </label>
-            <select type="text" name="month">
-                <option value="all">all</option>
-                <% months.forEach(month =>{ %>
-                    <option value="<%= month %>"><%= month %></option>
-                <% }) %>
-            </select>
-        </div>
-        <input type="submit" value="View" class="submit-button"/>
-    </form>
+    <% } %>
 </main>
 </body>
