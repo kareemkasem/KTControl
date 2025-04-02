@@ -14,7 +14,7 @@
         >
             <div class="entry">
                 <label for="employee">Employee: </label>
-                <select type="text" name="employee">
+                <select name="employee" id="employee">
                     <option value="all">all</option>
                     <% employees.forEach(employee =>{ %>
                         <option value="<%= employee %>"><%= employee %></option>
@@ -23,7 +23,7 @@
             </div>
             <div class="entry">
                 <label for="month">Month: </label>
-                <select type="text" name="month">
+                <select name="month" id="month">
                     <option value="all">all</option>
                     <% months.forEach(month =>{ %>
                         <option value="<%= month %>"><%= month %></option>
