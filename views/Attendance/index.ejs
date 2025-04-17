@@ -1,41 +1,35 @@
 <%- include('../shared/head'); %>
 <head>
-    <link rel="stylesheet" href="/css/shared.css"/>
+	<link rel="stylesheet" href="/css/shared.css" />
+	<script defer src="/js/attendance.js"></script>
 </head>
 <body>
-<%- include('../shared/nav', {title: "Attendance", link: "/"}) %>
-<main>
-    <% if(employees && months){ %>
-        <form
-                action="/attendance"
-                method="post"
-                autocomplete="off"
-                class="form-container"
-        >
-            <div class="entry">
-                <label for="employee">Employee: </label>
-                <select name="employee" id="employee">
-                    <option value="all">all</option>
-                    <% employees.forEach(employee =>{ %>
-                        <option value="<%= employee %>"><%= employee %></option>
-                    <% }) %>
-                </select>
-            </div>
-            <div class="entry">
-                <label for="month">Month: </label>
-                <select name="month" id="month">
-                    <option value="all">all</option>
-                    <% months.forEach(month =>{ %>
-                        <option value="<%= month %>"><%= month %></option>
-                    <% }) %>
-                </select>
-            </div>
-            <input type="submit" value="View" class="submit-button"/>
-        </form>
-    <% } else { %>
-        <div>
-            insufficient database entries
-        </div>
-    <% } %>
-</main>
+	<%- include('../shared/nav', {title: "Attendance", link: "/"}) %>
+	<main>
+		<% if(employees && months){ %>
+		<form action="" method="" class="form-container">
+			<div class="entry">
+				<label for="employee">Employee: </label>
+				<select name="employee" id="employee">
+					<option value="all">all</option>
+					<% employees.forEach(employee =>{ %>
+					<option value="<%= employee %>"><%= employee %></option>
+					<% }) %>
+				</select>
+			</div>
+			<div class="entry">
+				<label for="month">Month: </label>
+				<select name="month" id="month">
+					<option value="all">all</option>
+					<% months.forEach(month =>{ %>
+					<option value="<%= month %>"><%= month %></option>
+					<% }) %>
+				</select>
+			</div>
+			<button class="submit-button" id="submitBtn">View</button>
+		</form>
+		<% } else { %>
+		<div>insufficient database entries</div>
+		<% } %>
+	</main>
 </body>

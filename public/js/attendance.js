@@ -1,8 +1,10 @@
-// const searchBtn = document.getElementById("search-btn")
-// const dayInput = document.getElementById("date")
+let employee = document.getElementById("employee");
+employee = Number(employee.value) || "all";
+const month = document.getElementById("month").value;
+const submitBtn = document.getElementById("submitBtn");
 
-// searchBtn.addEventListener("click", () => {
-//     const date = dayInput.value
-//     const day = new Date(date).toDateString()
-//     window.location.href = window.location.origin + "/attendance/history?" + new URLSearchParams({day})
-// })
+submitBtn.addEventListener("click", (e) => {
+	e.preventDefault();
+	window.location.href =
+		window.origin + `/attendance/query/?employee=${employee}&month=${month}`;
+});
